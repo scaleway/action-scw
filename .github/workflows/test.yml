@@ -1,0 +1,31 @@
+on: [ push, pull_request ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2.2.4
+      - name: Set Node.js 16.x
+        uses: actions/setup-node@v3.6.0
+        with:
+          cache: 'pnpm'
+          node-version: 16.x
+      - run: pnpm install
+      - run: pnpm build
+      - run: pnpm lint
+  test_action:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install CLI
+        uses: ./
+        with:
+          version: v2.13.0
+        env:
+          RUNNER_DEBUG: 1
+      - name: Find CLI
+        run: ls -lR $RUNNER_TOOL_CACHE/scw
+      - name: Use CLI
+        run: scw info

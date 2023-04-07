@@ -1,0 +1,35 @@
+{
+  "root": true,
+  "plugins": [
+    "eslint-plugin-tsdoc"
+  ],
+  "parserOptions": {
+    "project": ["tsconfig.json"]
+  },
+  "extends": ["@scaleway/react/typescript"],
+  "rules": {
+    "tsdoc/syntax": "warn",
+    "@typescript-eslint/naming-convention": [
+      "error",
+      {
+        "selector": "enumMember",
+        "format": ["PascalCase"]
+      }
+    ],
+    "import/prefer-default-export": "off",
+    "import/no-default-export": "error",
+    //"no-await-in-loop": "off",
+    "@typescript-eslint/no-namespace": "off"
+  },
+  "overrides": [
+    {
+      "files": [
+        "./packages/clients/src/scw/**/*.ts",
+        "./packages/clients/src/internal/**/*.ts"
+      ],
+      "rules": {
+        "@typescript-eslint/consistent-type-definitions": "off"
+      }
+    }
+  ]
+}

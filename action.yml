@@ -1,0 +1,10 @@
+name: "Scaleway CLI action"
+description: "Install and use Scaleway CLI"
+inputs:
+  version:
+    description: 'CLI version'
+    required: true
+    default: 'latest'
+runs:
+  using: node16
+  main: dist/index.js
