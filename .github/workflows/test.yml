@@ -1,4 +1,6 @@
-on: [ push, pull_request ]
+name: Test action
+
+on: [push, pull_request]
 
 jobs:
   lint:
@@ -29,3 +31,21 @@ jobs:
         run: ls -lR $RUNNER_TOOL_CACHE/scw
       - name: Use CLI
         run: scw info
+  test_action_usage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Use CLI
+        id: cli
+        uses: ./
+        with:
+          args: instance server-type list
+          version: v2.13.0
+          access_key: ${{ secrets.SCW_ACCESS_KEY }}
+          secret_key: ${{ secrets.SCW_SECRET_KEY }}
+          default_project_id: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
+          default_organization_id: ${{ secrets.SCW_DEFAULT_ORGANIZATION_ID }}
+      - name: Check output
+        run: |
+          [ "$( echo '${{ steps.cli.outputs.json }}' | jq -r 'type')" = "array" ]

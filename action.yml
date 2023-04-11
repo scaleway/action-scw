@@ -5,6 +5,21 @@ inputs:
     description: 'CLI version'
     required: true
     default: 'latest'
+  args:
+    description: 'Arguments of a CLI command'
+    required: false
+  access_key:
+    description: 'Scaleway access key'
+    required: false
+  secret_key:
+    description: 'Scaleway secret key'
+    required: false
+  default_project_id:
+    description: 'Scaleway default project ID'
+    required: false
+  default_organization_id:
+    description: 'Scaleway default organization ID'
+    required: false
 runs:
   using: node16
   main: dist/index.js
