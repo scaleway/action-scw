@@ -2,7 +2,7 @@ import * as core from '@actions/core';
 import * as io from '@actions/io';
 import * as tc from '@actions/tool-cache';
 import {promises as fs} from 'fs';
-import {type Args} from './input.js';
+import type {Args} from './input.js';
 import {getLatest} from './version.js';
 
 const TOOL_NAME = 'scw';
