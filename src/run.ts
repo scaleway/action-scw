@@ -8,6 +8,14 @@ type spawnResult = {
     stderr: string | null
 }
 
+export class CLIError extends Error {
+    constructor(message: string) {
+        super(message);
+        this.name = "CLIError";
+    }
+}
+
+
 const spawnPromise = async (command: string, args: string[]): Promise<spawnResult> => new Promise((resolve, reject) => {
     const process = spawn(command, args);
     process.stdout.setEncoding('utf-8');
@@ -49,10 +57,8 @@ export const run = async (args: string, cliPath = 'scw'): Promise<string> => {
 
     const res = await spawnPromise(cliPath, cmdArgs);
     if (res.code !== 0) {
-        core.error(`failed to run command, code: ${res.code || 'null'}`);
         core.info(res.stderr || '');
-
-        return '';
+        throw new CLIError(`failed to run command, code: ${res.code || 'null'}`);
     }
     core.info(res.stdout || '');
 

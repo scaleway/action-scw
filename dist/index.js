@@ -7044,6 +7044,12 @@ var shell_quote = __nccwpck_require__(5886);
 
 
 
+class CLIError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = "CLIError";
+    }
+}
 const spawnPromise = async (command, args) => new Promise((resolve, reject) => {
     const process = (0,external_child_process_.spawn)(command, args);
     process.stdout.setEncoding('utf-8');
@@ -7078,9 +7084,8 @@ const run = async (args, cliPath = 'scw') => {
     const cmdArgs = parseCmdArgs(args, baseArgs);
     const res = await spawnPromise(cliPath, cmdArgs);
     if (res.code !== 0) {
-        core.error(`failed to run command, code: ${res.code || 'null'}`);
         core.info(res.stderr || '');
-        return '';
+        throw new CLIError(`failed to run command, code: ${res.code || 'null'}`);
     }
     core.info(res.stdout || '');
     return res.stdout || '';
@@ -7110,9 +7115,20 @@ const main = async () => {
     const cliPath = await install(args.version);
     if (args.args !== '') {
         fillEnv(args);
-        const res = await run(args.args, external_path_.join(cliPath, 'scw'));
-        if (res !== '') {
-            core.setOutput('json', res);
+        try {
+            const res = await run(args.args, external_path_.join(cliPath, 'scw'));
+            if (res !== '') {
+                core.setOutput('json', res);
+            }
+        }
+        catch (e) {
+            if (e instanceof CLIError) {
+                core.error(e.message);
+                process.exit(1);
+            }
+            else {
+                throw e;
+            }
         }
     }
     return undefined;
