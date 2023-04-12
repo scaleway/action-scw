@@ -20,7 +20,7 @@ export const main = async (): Promise<void> => {
     const args = getArgs();
 
     if (validateArgs(args)) {
-        return undefined;
+        return;
     }
 
     const cliPath = await install(args.version);
@@ -42,8 +42,6 @@ export const main = async (): Promise<void> => {
         }
 
     }
-
-    return undefined;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-floating-promises
