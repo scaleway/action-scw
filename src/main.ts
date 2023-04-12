@@ -25,7 +25,7 @@ export const main = async (): Promise<void> => {
 
     const cliPath = await install(args.version);
 
-    if (args.args !== '') {
+    if (args.args) {
         fillEnv(args);
         try {
             const res = await run(args.args, path.join(cliPath, 'scw'));
