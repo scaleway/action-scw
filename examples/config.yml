@@ -1,0 +1,24 @@
+name: Install cli and create config
+
+on: [push, pull_request]
+
+jobs:
+  example_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install CLI and create config file
+        uses: scaleway/action-scw
+        with:
+          version: v2.14.0
+          access_key: ${{ secrets.SCW_ACCESS_KEY }}
+          secret_key: ${{ secrets.SCW_SECRET_KEY }}
+          default_project_id: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
+          default_organization_id: ${{ secrets.SCW_DEFAULT_ORGANIZATION_ID }}
+          save_config: true
+
+      - run: scw instance server list
+
+      - uses: scaleway/action-scw
+        with:
+          version: v2.14.0
+          args: instance server list
