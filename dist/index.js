@@ -5491,6 +5491,273 @@ function coerce (version, options) {
 
 /***/ }),
 
+/***/ 5886:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+
+
+/* unused reexport */ __nccwpck_require__(8030);
+exports.parse = __nccwpck_require__(208);
+
+
+/***/ }),
+
+/***/ 208:
+/***/ ((module) => {
+
+
+
+// '<(' is process substitution operator and
+// can be parsed the same as control operator
+var CONTROL = '(?:' + [
+	'\\|\\|',
+	'\\&\\&',
+	';;',
+	'\\|\\&',
+	'\\<\\(',
+	'\\<\\<\\<',
+	'>>',
+	'>\\&',
+	'<\\&',
+	'[&;()|<>]'
+].join('|') + ')';
+var controlRE = new RegExp('^' + CONTROL + '$');
+var META = '|&;()<> \\t';
+var SINGLE_QUOTE = '"((\\\\"|[^"])*?)"';
+var DOUBLE_QUOTE = '\'((\\\\\'|[^\'])*?)\'';
+var hash = /^#$/;
+
+var SQ = "'";
+var DQ = '"';
+var DS = '$';
+
+var TOKEN = '';
+var mult = 0x100000000; // Math.pow(16, 8);
+for (var i = 0; i < 4; i++) {
+	TOKEN += (mult * Math.random()).toString(16);
+}
+var startsWithToken = new RegExp('^' + TOKEN);
+
+function matchAll(s, r) {
+	var origIndex = r.lastIndex;
+
+	var matches = [];
+	var matchObj;
+
+	while ((matchObj = r.exec(s))) {
+		matches.push(matchObj);
+		if (r.lastIndex === matchObj.index) {
+			r.lastIndex += 1;
+		}
+	}
+
+	r.lastIndex = origIndex;
+
+	return matches;
+}
+
+function getVar(env, pre, key) {
+	var r = typeof env === 'function' ? env(key) : env[key];
+	if (typeof r === 'undefined' && key != '') {
+		r = '';
+	} else if (typeof r === 'undefined') {
+		r = '$';
+	}
+
+	if (typeof r === 'object') {
+		return pre + TOKEN + JSON.stringify(r) + TOKEN;
+	}
+	return pre + r;
+}
+
+function parseInternal(string, env, opts) {
+	if (!opts) {
+		opts = {};
+	}
+	var BS = opts.escape || '\\';
+	var BAREWORD = '(\\' + BS + '[\'"' + META + ']|[^\\s\'"' + META + '])+';
+
+	var chunker = new RegExp([
+		'(' + CONTROL + ')', // control chars
+		'(' + BAREWORD + '|' + SINGLE_QUOTE + '|' + DOUBLE_QUOTE + ')+'
+	].join('|'), 'g');
+
+	var matches = matchAll(string, chunker);
+
+	if (matches.length === 0) {
+		return [];
+	}
+	if (!env) {
+		env = {};
+	}
+
+	var commented = false;
+
+	return matches.map(function (match) {
+		var s = match[0];
+		if (!s || commented) {
+			return void undefined;
+		}
+		if (controlRE.test(s)) {
+			return { op: s };
+		}
+
+		// Hand-written scanner/parser for Bash quoting rules:
+		//
+		// 1. inside single quotes, all characters are printed literally.
+		// 2. inside double quotes, all characters are printed literally
+		//    except variables prefixed by '$' and backslashes followed by
+		//    either a double quote or another backslash.
+		// 3. outside of any quotes, backslashes are treated as escape
+		//    characters and not printed (unless they are themselves escaped)
+		// 4. quote context can switch mid-token if there is no whitespace
+		//     between the two quote contexts (e.g. all'one'"token" parses as
+		//     "allonetoken")
+		var quote = false;
+		var esc = false;
+		var out = '';
+		var isGlob = false;
+		var i;
+
+		function parseEnvVar() {
+			i += 1;
+			var varend;
+			var varname;
+			var char = s.charAt(i);
+
+			if (char === '{') {
+				i += 1;
+				if (s.charAt(i) === '}') {
+					throw new Error('Bad substitution: ' + s.slice(i - 2, i + 1));
+				}
+				varend = s.indexOf('}', i);
+				if (varend < 0) {
+					throw new Error('Bad substitution: ' + s.slice(i));
+				}
+				varname = s.slice(i, varend);
+				i = varend;
+			} else if ((/[*@#?$!_-]/).test(char)) {
+				varname = char;
+				i += 1;
+			} else {
+				var slicedFromI = s.slice(i);
+				varend = slicedFromI.match(/[^\w\d_]/);
+				if (!varend) {
+					varname = slicedFromI;
+					i = s.length;
+				} else {
+					varname = slicedFromI.slice(0, varend.index);
+					i += varend.index - 1;
+				}
+			}
+			return getVar(env, '', varname);
+		}
+
+		for (i = 0; i < s.length; i++) {
+			var c = s.charAt(i);
+			isGlob = isGlob || (!quote && (c === '*' || c === '?'));
+			if (esc) {
+				out += c;
+				esc = false;
+			} else if (quote) {
+				if (c === quote) {
+					quote = false;
+				} else if (quote == SQ) {
+					out += c;
+				} else { // Double quote
+					if (c === BS) {
+						i += 1;
+						c = s.charAt(i);
+						if (c === DQ || c === BS || c === DS) {
+							out += c;
+						} else {
+							out += BS + c;
+						}
+					} else if (c === DS) {
+						out += parseEnvVar();
+					} else {
+						out += c;
+					}
+				}
+			} else if (c === DQ || c === SQ) {
+				quote = c;
+			} else if (controlRE.test(c)) {
+				return { op: s };
+			} else if (hash.test(c)) {
+				commented = true;
+				var commentObj = { comment: string.slice(match.index + i + 1) };
+				if (out.length) {
+					return [out, commentObj];
+				}
+				return [commentObj];
+			} else if (c === BS) {
+				esc = true;
+			} else if (c === DS) {
+				out += parseEnvVar();
+			} else {
+				out += c;
+			}
+		}
+
+		if (isGlob) {
+			return { op: 'glob', pattern: out };
+		}
+
+		return out;
+	}).reduce(function (prev, arg) { // finalize parsed arguments
+		// TODO: replace this whole reduce with a concat
+		return typeof arg === 'undefined' ? prev : prev.concat(arg);
+	}, []);
+}
+
+module.exports = function parse(s, env, opts) {
+	var mapped = parseInternal(s, env, opts);
+	if (typeof env !== 'function') {
+		return mapped;
+	}
+	return mapped.reduce(function (acc, s) {
+		if (typeof s === 'object') {
+			return acc.concat(s);
+		}
+		var xs = s.split(RegExp('(' + TOKEN + '.*?' + TOKEN + ')', 'g'));
+		if (xs.length === 1) {
+			return acc.concat(xs[0]);
+		}
+		return acc.concat(xs.filter(Boolean).map(function (x) {
+			if (startsWithToken.test(x)) {
+				return JSON.parse(x.split(TOKEN)[1]);
+			}
+			return x;
+		}));
+	}, []);
+};
+
+
+/***/ }),
+
+/***/ 8030:
+/***/ ((module) => {
+
+
+
+module.exports = function quote(xs) {
+	return xs.map(function (s) {
+		if (s && typeof s === 'object') {
+			return s.op.replace(/(.)/g, '\\$1');
+		}
+		if ((/["\s]/).test(s) && !(/'/).test(s)) {
+			return "'" + s.replace(/(['\\])/g, '\\$1') + "'";
+		}
+		if ((/["'\s]/).test(s)) {
+			return '"' + s.replace(/(["\\$`!])/g, '\\$1') + '"';
+		}
+		return String(s).replace(/([A-Za-z]:)?([#!"$&'()*,:;<=>?@[\\\]^`{|}])/g, '$1\\$2');
+	}).join(' ');
+};
+
+
+/***/ }),
+
 /***/ 4249:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
@@ -6656,6 +6923,8 @@ __nccwpck_require__.d(__webpack_exports__, {
 
 // EXTERNAL MODULE: ./node_modules/.pnpm/@actions+core@1.10.0/node_modules/@actions/core/lib/core.js
 var core = __nccwpck_require__(7733);
+// EXTERNAL MODULE: external "path"
+var external_path_ = __nccwpck_require__(1017);
 // EXTERNAL MODULE: ./node_modules/.pnpm/@actions+io@1.1.3/node_modules/@actions/io/lib/io.js
 var io = __nccwpck_require__(8629);
 // EXTERNAL MODULE: ./node_modules/.pnpm/@actions+tool-cache@2.0.1/node_modules/@actions/tool-cache/lib/tool-cache.js
@@ -6740,6 +7009,13 @@ const install = async (_version) => {
         addToPath(toolPath);
         core.addPath(toolPath);
     }
+    return toolPath;
+};
+const fillEnv = (args) => {
+    process.env.SCW_ACCESS_KEY = args.accessKey;
+    process.env.SCW_SECRET_KEY = args.secretKey;
+    process.env.SCW_DEFAULT_ORGANIZATION_ID = args.defaultOrganizationID;
+    process.env.SCW_DEFAULT_PROJECT_ID = args.defaultProjectID;
 };
 
 ;// CONCATENATED MODULE: ./lib/input.js
@@ -6760,21 +7036,101 @@ const validateArgs = (args) => {
     return invalid;
 };
 
+// EXTERNAL MODULE: external "child_process"
+var external_child_process_ = __nccwpck_require__(2081);
+// EXTERNAL MODULE: ./node_modules/.pnpm/shell-quote@1.8.1/node_modules/shell-quote/index.js
+var shell_quote = __nccwpck_require__(5886);
+;// CONCATENATED MODULE: ./lib/run.js
+
+
+
+class CLIError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = "CLIError";
+    }
+}
+const spawnPromise = async (command, args) => new Promise((resolve, reject) => {
+    const process = (0,external_child_process_.spawn)(command, args);
+    process.stdout.setEncoding('utf-8');
+    process.stderr.setEncoding('utf-8');
+    process.on('exit', code => {
+        resolve({
+            code,
+            stdout: process.stdout.read(),
+            stderr: process.stderr.read(),
+        });
+    });
+    process.on('error', err => {
+        reject(err);
+    });
+});
+const parseCmdArgs = (args, base = new Array()) => {
+    const cmdArgs = base;
+    const parseEntries = (0,shell_quote.parse)(args);
+    for (const parseEntry of parseEntries) {
+        if (typeof parseEntry !== 'string') {
+            throw new Error('Invalid command arguments');
+        }
+        cmdArgs.push(parseEntry);
+    }
+    return cmdArgs;
+};
+const run = async (args, cliPath = 'scw') => {
+    const baseArgs = ['-o=json'];
+    if (core.isDebug()) {
+        baseArgs.push('--debug');
+    }
+    const cmdArgs = parseCmdArgs(args, baseArgs);
+    const res = await spawnPromise(cliPath, cmdArgs);
+    if (res.code !== 0) {
+        core.info(res.stderr || '');
+        throw new CLIError(`failed to run command, code: ${res.code || 'null'}`);
+    }
+    core.info(res.stdout || '');
+    return res.stdout || '';
+};
+
 ;// CONCATENATED MODULE: ./lib/main.js
+
+
 
 
 
 const getArgs = () => ({
     version: core.getInput('version', {
         required: true,
-    })
+    }),
+    accessKey: core.getInput('access_key'),
+    secretKey: core.getInput('secret_key'),
+    defaultOrganizationID: core.getInput('default_organization_id'),
+    defaultProjectID: core.getInput('default_project_id'),
+    args: core.getInput('args'),
 });
 const main = async () => {
     const args = getArgs();
     if (validateArgs(args)) {
         return;
     }
-    await install(args.version);
+    const cliPath = await install(args.version);
+    if (args.args) {
+        fillEnv(args);
+        try {
+            const res = await run(args.args, external_path_.join(cliPath, 'scw'));
+            if (res !== '') {
+                core.setOutput('json', res);
+            }
+        }
+        catch (e) {
+            if (e instanceof CLIError) {
+                core.error(e.message);
+                process.exit(1);
+            }
+            else {
+                throw e;
+            }
+        }
+    }
 };
 // eslint-disable-next-line @typescript-eslint/no-floating-promises
 main();
