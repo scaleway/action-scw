@@ -7012,10 +7012,10 @@ const install = async (_version) => {
     return toolPath;
 };
 const fillEnv = (args) => {
-    process.env.SCW_ACCESS_KEY = args.access_key;
-    process.env.SCW_SECRET_KEY = args.secret_key;
-    process.env.SCW_DEFAULT_ORGANIZATION_ID = args.default_organization_id;
-    process.env.SCW_DEFAULT_PROJECT_ID = args.default_project_id;
+    process.env.SCW_ACCESS_KEY = args.accessKey;
+    process.env.SCW_SECRET_KEY = args.secretKey;
+    process.env.SCW_DEFAULT_ORGANIZATION_ID = args.defaultOrganizationID;
+    process.env.SCW_DEFAULT_PROJECT_ID = args.defaultProjectID;
 };
 
 ;// CONCATENATED MODULE: ./lib/input.js
@@ -7101,19 +7101,19 @@ const getArgs = () => ({
     version: core.getInput('version', {
         required: true,
     }),
-    access_key: core.getInput('access_key'),
-    secret_key: core.getInput('secret_key'),
-    default_organization_id: core.getInput('default_organization_id'),
-    default_project_id: core.getInput('default_project_id'),
+    accessKey: core.getInput('access_key'),
+    secretKey: core.getInput('secret_key'),
+    defaultOrganizationID: core.getInput('default_organization_id'),
+    defaultProjectID: core.getInput('default_project_id'),
     args: core.getInput('args'),
 });
 const main = async () => {
     const args = getArgs();
     if (validateArgs(args)) {
-        return undefined;
+        return;
     }
     const cliPath = await install(args.version);
-    if (args.args !== '') {
+    if (args.args) {
         fillEnv(args);
         try {
             const res = await run(args.args, external_path_.join(cliPath, 'scw'));
@@ -7131,7 +7131,6 @@ const main = async () => {
             }
         }
     }
-    return undefined;
 };
 // eslint-disable-next-line @typescript-eslint/no-floating-promises
 main();

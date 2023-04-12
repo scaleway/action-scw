@@ -3,10 +3,10 @@ import * as tc from '@actions/tool-cache';
 
 export type Args = {
     version: string
-    access_key: string
-    secret_key: string
-    default_organization_id: string
-    default_project_id: string
+    accessKey: string
+    secretKey: string
+    defaultOrganizationID: string
+    defaultProjectID: string
     args: string
 }
 

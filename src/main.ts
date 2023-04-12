@@ -9,10 +9,10 @@ const getArgs = (): Args => ({
     version: core.getInput('version', {
         required: true,
     }),
-    access_key: core.getInput('access_key'),
-    secret_key: core.getInput('secret_key'),
-    default_organization_id: core.getInput('default_organization_id'),
-    default_project_id: core.getInput('default_project_id'),
+    accessKey: core.getInput('access_key'),
+    secretKey: core.getInput('secret_key'),
+    defaultOrganizationID: core.getInput('default_organization_id'),
+    defaultProjectID: core.getInput('default_project_id'),
     args: core.getInput('args'),
 });
 

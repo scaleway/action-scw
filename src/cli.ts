@@ -74,8 +74,8 @@ export const install = async (_version: string) => {
 };
 
 export const fillEnv = (args: Args) => {
-    process.env.SCW_ACCESS_KEY = args.access_key;
-    process.env.SCW_SECRET_KEY = args.secret_key;
-    process.env.SCW_DEFAULT_ORGANIZATION_ID = args.default_organization_id;
-    process.env.SCW_DEFAULT_PROJECT_ID = args.default_project_id;
+    process.env.SCW_ACCESS_KEY = args.accessKey;
+    process.env.SCW_SECRET_KEY = args.secretKey;
+    process.env.SCW_DEFAULT_ORGANIZATION_ID = args.defaultOrganizationID;
+    process.env.SCW_DEFAULT_PROJECT_ID = args.defaultProjectID;
 };
