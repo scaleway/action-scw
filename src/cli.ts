@@ -2,6 +2,7 @@ import * as core from '@actions/core';
 import * as io from '@actions/io';
 import * as tc from '@actions/tool-cache';
 import {promises as fs} from 'fs';
+import {type Args} from './input.js';
 import {getLatest} from './version.js';
 
 const TOOL_NAME = 'scw';
@@ -35,15 +36,15 @@ const addToPath = (toolPath: string) => {
 };
 
 const setPermissions = async (cliPath: string) => {
-    core.debug(`chmod ${cliPath}`)
+    core.debug(`chmod ${cliPath}`);
 
     await fs.chmod(cliPath, 0o755); // rwx r-x r-x
 
     if (core.isDebug()) {
-        const st = await fs.stat(cliPath)
-        core.debug(`mode ${st.mode}`)
+        const st = await fs.stat(cliPath);
+        core.debug(`mode ${st.mode}`);
     }
-}
+};
 
 export const install = async (_version: string) => {
     let version = _version;
@@ -68,4 +69,13 @@ export const install = async (_version: string) => {
         addToPath(toolPath);
         core.addPath(toolPath);
     }
+
+    return toolPath;
+};
+
+export const fillEnv = (args: Args) => {
+    process.env.SCW_ACCESS_KEY = args.access_key;
+    process.env.SCW_SECRET_KEY = args.secret_key;
+    process.env.SCW_DEFAULT_ORGANIZATION_ID = args.default_organization_id;
+    process.env.SCW_DEFAULT_PROJECT_ID = args.default_project_id;
 };
