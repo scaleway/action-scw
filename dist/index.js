@@ -7102,7 +7102,7 @@ const getArgs = () => ({
         required: true,
     }),
     access_key: core.getInput('access_key'),
-    secret_key: core.getInput('secrey_key'),
+    secret_key: core.getInput('secret_key'),
     default_organization_id: core.getInput('default_organization_id'),
     default_project_id: core.getInput('default_project_id'),
     args: core.getInput('args'),
