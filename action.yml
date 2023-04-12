@@ -20,6 +20,9 @@ inputs:
   default_organization_id:
     description: 'Scaleway default organization ID'
     required: false
+outputs:
+  json:
+    description: JSON output of CLI command if args has been specified
 runs:
   using: node16
   main: dist/index.js
