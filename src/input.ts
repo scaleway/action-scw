@@ -1,6 +1,6 @@
 import * as core from '@actions/core'
 import * as tc from '@actions/tool-cache'
-import { VERSION_LATEST } from './version'
+import { VERSION_LATEST } from './version.js'
 
 export type Args = {
   version: string

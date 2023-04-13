@@ -6752,14 +6752,6 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ 7065:
-/***/ ((module) => {
-
-module.exports = eval("require")("./version");
-
-
-/***/ }),
-
 /***/ 9491:
 /***/ ((module) => {
 
@@ -7027,14 +7019,12 @@ const fillEnv = (args) => {
     process.env.SCW_DEFAULT_PROJECT_ID = args.defaultProjectID;
 };
 
-// EXTERNAL MODULE: ./node_modules/.pnpm/@vercel+ncc@0.36.1/node_modules/@vercel/ncc/dist/ncc/@@notfound.js?./version
-var _notfoundversion = __nccwpck_require__(7065);
 ;// CONCATENATED MODULE: ./lib/input.js
 
 
 
 const versionIsValid = (version) => {
-    if (version === _notfoundversion.VERSION_LATEST) {
+    if (version === VERSION_LATEST) {
         return true;
     }
     if (!tool_cache.isExplicitVersion(version)) {
