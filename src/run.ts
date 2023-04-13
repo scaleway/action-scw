@@ -1,67 +1,64 @@
-import * as core from '@actions/core';
-import {spawn} from 'child_process';
-import {parse} from 'shell-quote';
+import * as core from '@actions/core'
+import { spawn } from 'child_process'
+import { parse } from 'shell-quote'
 
-type spawnResult = {
-    code: number | null
-    stdout: string | null
-    stderr: string | null
+type SpawnResult = {
+  code: number | null
+  stdout: string | null
+  stderr: string | null
 }
 
 export class CLIError extends Error {
-    constructor(message: string) {
-        super(message);
-        this.name = "CLIError";
-    }
+  constructor(message: string) {
+    super(message)
+    this.name = 'CLIError'
+  }
 }
 
-
-const spawnPromise = async (command: string, args: string[]): Promise<spawnResult> => new Promise((resolve, reject) => {
-    const process = spawn(command, args);
-    process.stdout.setEncoding('utf-8');
-    process.stderr.setEncoding('utf-8');
+const spawnPromise = async (
+  command: string,
+  args: string[],
+): Promise<SpawnResult> =>
+  new Promise((resolve, reject) => {
+    const process = spawn(command, args)
+    process.stdout.setEncoding('utf-8')
+    process.stderr.setEncoding('utf-8')
 
     process.on('exit', code => {
-        resolve({
-            code,
-            stdout: process.stdout.read() as string | null,
-            stderr: process.stderr.read() as string | null,
-        });
-    });
+      resolve({
+        code,
+        stdout: process.stdout.read() as string | null,
+        stderr: process.stderr.read() as string | null,
+      })
+    })
     process.on('error', err => {
-        reject(err);
-    });
-});
+      reject(err)
+    })
+  })
 
-const parseCmdArgs = (args: string, base = new Array<string>()): string[] => {
-    const cmdArgs = base;
-    const parseEntries = parse(args);
-
-    for (const parseEntry of parseEntries) {
-        if (typeof parseEntry !== 'string') {
-            throw new Error('Invalid command arguments');
-        }
-        cmdArgs.push(parseEntry);
+const parseCmdArgs = (args: string) =>
+  parse(args).map(arg => {
+    if (typeof arg !== 'string') {
+      throw new Error('Invalid command arguments')
     }
 
-    return cmdArgs;
-};
+    return arg
+  })
 
-export const run = async (args: string, cliPath = 'scw'): Promise<string> => {
-    const baseArgs = ['-o=json'];
-    if (core.isDebug()) {
-        baseArgs.push('--debug');
-    }
+export const run = async (args: string, cliPath = 'scw') => {
+  const defaultArgs = ['-o=json']
+  if (core.isDebug()) {
+    defaultArgs.push('--debug')
+  }
 
-    const cmdArgs = parseCmdArgs(args, baseArgs);
+  const cmdArgs = defaultArgs.concat(parseCmdArgs(args))
 
-    const res = await spawnPromise(cliPath, cmdArgs);
-    if (res.code !== 0) {
-        core.info(res.stderr || '');
-        throw new CLIError(`failed to run command, code: ${res.code || 'null'}`);
-    }
-    core.info(res.stdout || '');
+  const res = await spawnPromise(cliPath, cmdArgs)
+  if (res.code !== 0) {
+    core.info(res.stderr || '')
+    throw new CLIError(`failed to run command, code: ${res.code || 'null'}`)
+  }
+  core.info(res.stdout || '')
 
-    return res.stdout || '';
-};
-
+  return res.stdout || ''
+}

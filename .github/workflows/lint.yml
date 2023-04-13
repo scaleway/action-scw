@@ -1,0 +1,23 @@
+name: Lint project
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2.2.4
+      - name: Set Node.js 16.x
+        uses: actions/setup-node@v3.6.0
+        with:
+          cache: 'pnpm'
+          node-version: 16.x
+      - run: pnpm install
+      - run: pnpm build
+      - run: pnpm lint
+      - run: pnpm prettier
