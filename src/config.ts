@@ -12,11 +12,11 @@ export const exportConfig = (args: Args) => {
 }
 
 export const importConfig = (): Args => ({
-  defaultOrganizationID: process.env.SCW_DEFAULT_ORGANIZATION_ID || '',
-  defaultProjectID: process.env.SCW_DEFAULT_PROJECT_ID || '',
-  secretKey: process.env.SCW_SECRET_KEY || '',
-  version: process.env.SCW_CLI_VERSION || '',
-  accessKey: process.env.SCW_ACCESS_KEY || '',
+  defaultOrganizationID: process.env.SCW_DEFAULT_ORGANIZATION_ID ?? '',
+  defaultProjectID: process.env.SCW_DEFAULT_PROJECT_ID ?? '',
+  secretKey: process.env.SCW_SECRET_KEY ?? '',
+  version: process.env.SCW_CLI_VERSION ?? '',
+  accessKey: process.env.SCW_ACCESS_KEY ?? '',
   args: '',
   exportConfig: false,
   saveConfig: false,
