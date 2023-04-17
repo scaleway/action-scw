@@ -23,7 +23,7 @@ export const getLatest = async () => {
   const body = resp.result
 
   if (body === null) {
-    throw new Error('Missing body')
+    throw new Error('Missing body when fetching latest version')
   } else if (body.tag_name === undefined) {
     throw new Error(`Missing tag_name in response when fetching latest version`)
   } else if (typeof body.tag_name !== 'string') {
