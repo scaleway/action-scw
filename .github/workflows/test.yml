@@ -110,6 +110,13 @@ jobs:
       - name: Check output
         run: |
           [ "$( echo '${{ steps.cli_manual.outputs.json }}' | jq -r 'type')" = "array" ]
+      - name: Check CLI config
+        uses: ./
+        with:
+          version: v2.13.0
+          args: config info
+        env:
+          RUNNER_DEBUG: true
       - name: Use CLI with saved config
         uses: ./
         id: cli
