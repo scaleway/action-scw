@@ -77,7 +77,7 @@ jobs:
           [ "$( echo '${{ steps.cli.outputs.json }}' | jq -r 'type')" = "array" ]
       - name: Use CLI manually with exported config
         id: cli_manual
-        run: echo "json='$(scw -o json instance server-type list)'" >> $GITHUB_OUTPUT
+        run: echo "json=$(scw -o json instance server-type list)" >> $GITHUB_OUTPUT
       - name: Check output
         run: |
           [ "$( echo '${{ steps.cli_manual.outputs.json }}' | jq -r 'type')" = "array" ]
@@ -106,7 +106,7 @@ jobs:
           default_organization_id: ${{ secrets.SCW_DEFAULT_ORGANIZATION_ID }}
       - name: Use CLI manually with saved config
         id: cli
-        run: echo "json='$(scw -o json instance server-type list)'" >> $GITHUB_OUTPUT
+        run: echo "json=$(scw -o json instance server-type list)" >> $GITHUB_OUTPUT
       - name: Check output
         run: |
           [ "$( echo '${{ steps.cli.outputs.json }}' | jq -r 'type')" = "array" ]
