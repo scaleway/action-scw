@@ -46,10 +46,10 @@ jobs:
         with:
           args: instance server-type list
           version: v2.13.0
-          access_key: ${{ secrets.SCW_ACCESS_KEY }}
-          secret_key: ${{ secrets.SCW_SECRET_KEY }}
-          default_project_id: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
-          default_organization_id: ${{ secrets.SCW_DEFAULT_ORGANIZATION_ID }}
+          access-key: ${{ secrets.SCW_ACCESS_KEY }}
+          secret-key: ${{ secrets.SCW_SECRET_KEY }}
+          default-project-id: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
+          default-organization-id: ${{ secrets.SCW_DEFAULT_ORGANIZATION_ID }}
       - name: Check output
         run: |
           [ "$( echo '${{ steps.cli.outputs.json }}' | jq -r 'type')" = "array" ]
@@ -61,12 +61,12 @@ jobs:
       - name: Install CLI and export config
         uses: ./
         with:
-          export_config: true
+          export-config: true
           version: v2.13.0
-          access_key: ${{ secrets.SCW_ACCESS_KEY }}
-          secret_key: ${{ secrets.SCW_SECRET_KEY }}
-          default_project_id: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
-          default_organization_id: ${{ secrets.SCW_DEFAULT_ORGANIZATION_ID }}
+          access-key: ${{ secrets.SCW_ACCESS_KEY }}
+          secret-key: ${{ secrets.SCW_SECRET_KEY }}
+          default-project-id: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
+          default-organization-id: ${{ secrets.SCW_DEFAULT_ORGANIZATION_ID }}
       - name: Use CLI with exported config
         uses: ./
         id: cli
@@ -84,12 +84,12 @@ jobs:
       - name: Export again
         uses: ./
         with:
-          export_config: true
+          export-config: true
           version: v2.13.0
-          access_key: ${{ secrets.SCW_ACCESS_KEY }}
-          secret_key: ${{ secrets.SCW_SECRET_KEY }}
-          default_project_id: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
-          default_organization_id: ${{ secrets.SCW_DEFAULT_ORGANIZATION_ID }}
+          access-key: ${{ secrets.SCW_ACCESS_KEY }}
+          secret-key: ${{ secrets.SCW_SECRET_KEY }}
+          default-project-id: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
+          default-organization-id: ${{ secrets.SCW_DEFAULT_ORGANIZATION_ID }}
   test_action_save_config:
     runs-on: ubuntu-latest
     steps:
@@ -98,12 +98,12 @@ jobs:
       - name: Install CLI and save config
         uses: ./
         with:
-          save_config: true
+          save-config: true
           version: v2.13.0
-          access_key: ${{ secrets.SCW_ACCESS_KEY }}
-          secret_key: ${{ secrets.SCW_SECRET_KEY }}
-          default_project_id: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
-          default_organization_id: ${{ secrets.SCW_DEFAULT_ORGANIZATION_ID }}
+          access-key: ${{ secrets.SCW_ACCESS_KEY }}
+          secret-key: ${{ secrets.SCW_SECRET_KEY }}
+          default-project-id: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
+          default-organization-id: ${{ secrets.SCW_DEFAULT_ORGANIZATION_ID }}
       - name: Use CLI manually with saved config
         id: cli_manual
         run: echo "json=$(scw -o json instance server-type list)" >> $GITHUB_OUTPUT
@@ -129,9 +129,9 @@ jobs:
       - name: Save again
         uses: ./
         with:
-          save_config: true
+          save-config: true
           version: v2.13.0
-          access_key: ${{ secrets.SCW_ACCESS_KEY }}
-          secret_key: ${{ secrets.SCW_SECRET_KEY }}
-          default_project_id: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
-          default_organization_id: ${{ secrets.SCW_DEFAULT_ORGANIZATION_ID }}
+          access-key: ${{ secrets.SCW_ACCESS_KEY }}
+          secret-key: ${{ secrets.SCW_SECRET_KEY }}
+          default-project-id: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
+          default-organization-id: ${{ secrets.SCW_DEFAULT_ORGANIZATION_ID }}

@@ -8,17 +8,17 @@ import { VERSION_LATEST } from './version.js'
 
 const getArgs = (defaultArgs: Args): Args => ({
   version: core.getInput('version') || defaultArgs.version || VERSION_LATEST,
-  accessKey: core.getInput('access_key') || defaultArgs.accessKey,
-  secretKey: core.getInput('secret_key') || defaultArgs.secretKey,
+  accessKey: core.getInput('access-key') || defaultArgs.accessKey,
+  secretKey: core.getInput('secret-key') || defaultArgs.secretKey,
   defaultOrganizationID:
-    core.getInput('default_organization_id') ||
+    core.getInput('default-organization-id') ||
     defaultArgs.defaultOrganizationID,
   defaultProjectID:
-    core.getInput('default_project_id') || defaultArgs.defaultProjectID,
+    core.getInput('default-project-id') || defaultArgs.defaultProjectID,
   args: core.getInput('args') || defaultArgs.args,
-  saveConfig: core.getBooleanInput('save_config') || defaultArgs.saveConfig,
+  saveConfig: core.getBooleanInput('save-config') || defaultArgs.saveConfig,
   exportConfig:
-    core.getBooleanInput('export_config') || defaultArgs.exportConfig,
+    core.getBooleanInput('export-config') || defaultArgs.exportConfig,
 })
 
 export const main = async () => {

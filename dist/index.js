@@ -7098,11 +7098,11 @@ const exportConfig = (args) => {
     core.exportVariable('SCW_CLI_VERSION', args.version);
 };
 const importConfig = () => ({
-    defaultOrganizationID: process.env.SCW_DEFAULT_ORGANIZATION_ID || '',
-    defaultProjectID: process.env.SCW_DEFAULT_PROJECT_ID || '',
-    secretKey: process.env.SCW_SECRET_KEY || '',
-    version: process.env.SCW_CLI_VERSION || '',
-    accessKey: process.env.SCW_ACCESS_KEY || '',
+    defaultOrganizationID: process.env.SCW_DEFAULT_ORGANIZATION_ID ?? '',
+    defaultProjectID: process.env.SCW_DEFAULT_PROJECT_ID ?? '',
+    secretKey: process.env.SCW_SECRET_KEY ?? '',
+    version: process.env.SCW_CLI_VERSION ?? '',
+    accessKey: process.env.SCW_ACCESS_KEY ?? '',
     args: '',
     exportConfig: false,
     saveConfig: false,
@@ -7145,14 +7145,14 @@ const validateArgs = (args) => !versionIsValid(args.version);
 
 const getArgs = (defaultArgs) => ({
     version: core.getInput('version') || defaultArgs.version || VERSION_LATEST,
-    accessKey: core.getInput('access_key') || defaultArgs.accessKey,
-    secretKey: core.getInput('secret_key') || defaultArgs.secretKey,
-    defaultOrganizationID: core.getInput('default_organization_id') ||
+    accessKey: core.getInput('access-key') || defaultArgs.accessKey,
+    secretKey: core.getInput('secret-key') || defaultArgs.secretKey,
+    defaultOrganizationID: core.getInput('default-organization-id') ||
         defaultArgs.defaultOrganizationID,
-    defaultProjectID: core.getInput('default_project_id') || defaultArgs.defaultProjectID,
+    defaultProjectID: core.getInput('default-project-id') || defaultArgs.defaultProjectID,
     args: core.getInput('args') || defaultArgs.args,
-    saveConfig: core.getBooleanInput('save_config') || defaultArgs.saveConfig,
-    exportConfig: core.getBooleanInput('export_config') || defaultArgs.exportConfig,
+    saveConfig: core.getBooleanInput('save-config') || defaultArgs.saveConfig,
+    exportConfig: core.getBooleanInput('export-config') || defaultArgs.exportConfig,
 });
 const main = async () => {
     const configArgs = importConfig();
