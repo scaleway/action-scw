@@ -6188,7 +6188,7 @@ var _v = _interopRequireDefault(__nccwpck_require__(9370));
 
 var _v2 = _interopRequireDefault(__nccwpck_require__(8638));
 
-var _v3 = _interopRequireDefault(__nccwpck_require__(3519));
+var _v3 = _interopRequireDefault(__nccwpck_require__(3964));
 
 var _v4 = _interopRequireDefault(__nccwpck_require__(8239));
 
@@ -6637,7 +6637,7 @@ function _default(name, version, hashfunc) {
 
 /***/ }),
 
-/***/ 3519:
+/***/ 3964:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 
@@ -7019,6 +7019,27 @@ const fillEnv = (args) => {
     process.env.SCW_DEFAULT_PROJECT_ID = args.defaultProjectID;
 };
 
+;// CONCATENATED MODULE: ./lib/config.js
+
+const exportConfig = (args) => {
+    core.exportVariable('SCW_ACCESS_KEY', args.accessKey);
+    core.setSecret(args.secretKey);
+    core.exportVariable('SCW_SECRET_KEY', args.secretKey);
+    core.exportVariable('SCW_DEFAULT_ORGANIZATION_ID', args.defaultOrganizationID);
+    core.exportVariable('SCW_DEFAULT_PROJECT_ID', args.defaultProjectID);
+    core.exportVariable('SCW_CLI_VERSION', args.version);
+};
+const importConfig = () => ({
+    defaultOrganizationID: process.env.SCW_DEFAULT_ORGANIZATION_ID || '',
+    defaultProjectID: process.env.SCW_DEFAULT_PROJECT_ID || '',
+    secretKey: process.env.SCW_SECRET_KEY || '',
+    version: process.env.SCW_CLI_VERSION || '',
+    accessKey: process.env.SCW_ACCESS_KEY || '',
+    args: '',
+    exportConfig: '',
+    saveConfig: '',
+});
+
 ;// CONCATENATED MODULE: ./lib/input.js
 
 
@@ -7091,22 +7112,29 @@ const run = async (args, cliPath = 'scw') => {
 
 
 
-const getArgs = () => ({
-    version: core.getInput('version', {
-        required: true,
-    }),
-    accessKey: core.getInput('access_key'),
-    secretKey: core.getInput('secret_key'),
-    defaultOrganizationID: core.getInput('default_organization_id'),
-    defaultProjectID: core.getInput('default_project_id'),
-    args: core.getInput('args'),
+
+
+const getArgs = (defaultArgs) => ({
+    version: core.getInput('version') || defaultArgs.version || VERSION_LATEST,
+    accessKey: core.getInput('access_key') || defaultArgs.accessKey,
+    secretKey: core.getInput('secret_key') || defaultArgs.secretKey,
+    defaultOrganizationID: core.getInput('default_organization_id') ||
+        defaultArgs.defaultOrganizationID,
+    defaultProjectID: core.getInput('default_project_id') || defaultArgs.defaultProjectID,
+    args: core.getInput('args') || defaultArgs.args,
+    saveConfig: core.getInput('save_config') || defaultArgs.saveConfig,
+    exportConfig: core.getInput('export_config') || defaultArgs.exportConfig,
 });
 const main = async () => {
-    const args = getArgs();
+    const configArgs = importConfig();
+    const args = getArgs(configArgs);
     if (validateArgs(args)) {
         return;
     }
     const cliPath = await install(args.version);
+    if (args.exportConfig) {
+        exportConfig(args);
+    }
     if (args.args) {
         fillEnv(args);
         try {

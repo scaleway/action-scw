@@ -2,11 +2,19 @@ name: "Scaleway CLI action"
 description: "Install and use Scaleway CLI"
 inputs:
   version:
-    description: 'CLI version'
-    required: true
-    default: 'latest'
+    description: 'CLI version, will default to latest or exported version'
+    required: false
   args:
     description: 'Arguments of a CLI command'
+    required: false
+  save_config:
+    description: |
+      Save scaleway profile to a config file in user home to use it in manual commands
+      Will leave the config in ${HOME}/.config/scw after
+    required: false
+  export_config:
+    description: |
+      Export scaleway profile to variables, variables will be available in next steps
     required: false
   access_key:
     description: 'Scaleway access key'
