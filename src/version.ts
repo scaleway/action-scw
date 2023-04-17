@@ -14,7 +14,7 @@ export const getLatest = async () => {
     throw new Error(`Failed to fetch latest version (status: ${resp.status})`)
   }
 
-  const body = (await resp.json()) as latestPayload
+  const body = (await resp.json()) as LatestPayload
 
   if (body.tag_name === undefined) {
     throw new Error(`Missing tag_name in response when fetching latest version`)
