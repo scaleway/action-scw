@@ -1,7 +1,7 @@
 export const VERSION_LATEST = 'latest'
 
 // https://docs.github.com/en/rest/releases/releases?apiVersion=2022-11-28#get-the-latest-release
-type latestPayload = {
+type LatestPayload = {
   tag_name: unknown
 }
 
