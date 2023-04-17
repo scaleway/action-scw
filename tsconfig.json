@@ -5,10 +5,12 @@
     "moduleResolution": "node",
     "outDir": "./lib",
     "rootDir": "./src",
+    "allowJs": false,
+    "skipLibCheck": true,
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
     "esModuleInterop": true
   },
-  "exclude": ["node_modules", "**/*.test.ts"]
+  "exclude": ["node_modules"]
 }

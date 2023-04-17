@@ -1,30 +1,27 @@
-import * as core from '@actions/core';
-import * as tc from '@actions/tool-cache';
+import * as core from '@actions/core'
+import * as tc from '@actions/tool-cache'
+import { VERSION_LATEST } from './version.js'
 
 export type Args = {
-    version: string
-    accessKey: string
-    secretKey: string
-    defaultOrganizationID: string
-    defaultProjectID: string
-    args: string
+  version: string
+  accessKey: string
+  secretKey: string
+  defaultOrganizationID: string
+  defaultProjectID: string
+  args: string
 }
 
 const versionIsValid = (version: string): boolean => {
-    if (version === 'latest') {
-        return true;
-    }
-    if (!tc.isExplicitVersion(version)) {
-        core.error('');
+  if (version === VERSION_LATEST) {
+    return true
+  }
+  if (!tc.isExplicitVersion(version)) {
+    core.error('')
 
-        return false;
-    }
+    return false
+  }
 
-    return true;
-};
+  return true
+}
 
-export const validateArgs = (args: Args): boolean => {
-    const invalid = !versionIsValid(args.version);
-
-    return invalid;
-};
+export const validateArgs = (args: Args) => !versionIsValid(args.version)

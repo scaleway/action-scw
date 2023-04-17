@@ -6932,17 +6932,18 @@ var tool_cache = __nccwpck_require__(514);
 // EXTERNAL MODULE: external "fs"
 var external_fs_ = __nccwpck_require__(7147);
 ;// CONCATENATED MODULE: ./lib/version.js
+const VERSION_LATEST = 'latest';
 const latestUrl = 'https://api.github.com/repos/scaleway/scaleway-cli/releases/latest';
 const getLatest = async () => {
     const resp = await fetch(latestUrl);
     if (!resp.ok) {
         throw new Error(`Failed to fetch latest version (status: ${resp.status})`);
     }
-    const body = await resp.json();
+    const body = (await resp.json());
     if (body.tag_name === undefined) {
         throw new Error(`Missing tag_name in response when fetching latest version`);
     }
-    else if (typeof body.tag_name !== "string") {
+    else if (typeof body.tag_name !== 'string') {
         throw new Error(`Invalid tag_name in response when fetching latest version`);
     }
     else {
@@ -6957,8 +6958,8 @@ const getLatest = async () => {
 
 
 const TOOL_NAME = 'scw';
-const downloadURL = (_version) => {
-    let version = _version;
+const downloadURL = (targetVersion) => {
+    let version = targetVersion;
     if (version.startsWith('v')) {
         version = version.slice(1);
     }
@@ -6966,7 +6967,7 @@ const downloadURL = (_version) => {
 };
 const isInPath = (toolPath) => {
     const envPath = process.env.PATH;
-    if (envPath === undefined) {
+    if (!envPath) {
         return false;
     }
     return envPath.split(':').includes(toolPath);
@@ -6980,21 +6981,21 @@ const addToPath = (toolPath) => {
         process.env.PATH = `${envPath}:${toolPath}`;
     }
 };
-const setPermissions = async (cliPath) => {
-    core.debug(`chmod ${cliPath}`);
-    await external_fs_.promises.chmod(cliPath, 0o755); // rwx r-x r-x
+const setPermissions = async (filePath) => {
+    core.debug(`chmod ${filePath}`);
+    await external_fs_.promises.chmod(filePath, 0o755); // rwx r-x r-x
     if (core.isDebug()) {
-        const st = await external_fs_.promises.stat(cliPath);
-        core.debug(`mode ${st.mode}`);
+        const stats = await external_fs_.promises.stat(filePath);
+        core.debug(`mode ${stats.mode}`);
     }
 };
-const install = async (_version) => {
-    let version = _version;
-    if (version === 'latest') {
+const install = async (requestedVersion) => {
+    let version = requestedVersion;
+    if (requestedVersion === VERSION_LATEST) {
         version = await getLatest();
     }
     let toolPath = tool_cache.find('scw', version);
-    if (toolPath === '') {
+    if (!toolPath) {
         core.info(`Didn't found CLI in cache, downloading ${version}`);
         const tmpCliPath = await tool_cache.downloadTool(downloadURL(version));
         await setPermissions(tmpCliPath);
@@ -7021,8 +7022,9 @@ const fillEnv = (args) => {
 ;// CONCATENATED MODULE: ./lib/input.js
 
 
+
 const versionIsValid = (version) => {
-    if (version === 'latest') {
+    if (version === VERSION_LATEST) {
         return true;
     }
     if (!tool_cache.isExplicitVersion(version)) {
@@ -7031,10 +7033,7 @@ const versionIsValid = (version) => {
     }
     return true;
 };
-const validateArgs = (args) => {
-    const invalid = !versionIsValid(args.version);
-    return invalid;
-};
+const validateArgs = (args) => !versionIsValid(args.version);
 
 // EXTERNAL MODULE: external "child_process"
 var external_child_process_ = __nccwpck_require__(2081);
@@ -7047,7 +7046,7 @@ var shell_quote = __nccwpck_require__(5886);
 class CLIError extends Error {
     constructor(message) {
         super(message);
-        this.name = "CLIError";
+        this.name = 'CLIError';
     }
 }
 const spawnPromise = async (command, args) => new Promise((resolve, reject) => {
@@ -7065,23 +7064,18 @@ const spawnPromise = async (command, args) => new Promise((resolve, reject) => {
         reject(err);
     });
 });
-const parseCmdArgs = (args, base = new Array()) => {
-    const cmdArgs = base;
-    const parseEntries = (0,shell_quote.parse)(args);
-    for (const parseEntry of parseEntries) {
-        if (typeof parseEntry !== 'string') {
-            throw new Error('Invalid command arguments');
-        }
-        cmdArgs.push(parseEntry);
+const parseCmdArgs = (args) => (0,shell_quote.parse)(args).map(arg => {
+    if (typeof arg !== 'string') {
+        throw new Error('Invalid command arguments');
     }
-    return cmdArgs;
-};
+    return arg;
+});
 const run = async (args, cliPath = 'scw') => {
-    const baseArgs = ['-o=json'];
+    const defaultArgs = ['-o=json'];
     if (core.isDebug()) {
-        baseArgs.push('--debug');
+        defaultArgs.push('--debug');
     }
-    const cmdArgs = parseCmdArgs(args, baseArgs);
+    const cmdArgs = defaultArgs.concat(parseCmdArgs(args));
     const res = await spawnPromise(cliPath, cmdArgs);
     if (res.code !== 0) {
         core.info(res.stderr || '');
