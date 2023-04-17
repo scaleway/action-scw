@@ -5,16 +5,16 @@ inputs:
     description: 'CLI version, will default to latest or exported version'
     required: false
   args:
-    description: 'Arguments of a CLI command'
+    description: 'Arguments of a CLI command, if set, a cli command will be executed'
     required: false
   save_config:
     description: |
       Save scaleway profile to a config file in user home to use it in manual commands
-      Will leave the config in ${HOME}/.config/scw after
+      Will leave the config in CLI config folder after the step
     required: false
   export_config:
     description: |
-      Export scaleway profile to variables, variables will be available in next steps
+      Export scaleway profile to environment variables that will be available in next steps
     required: false
   access_key:
     description: 'Scaleway access key'
