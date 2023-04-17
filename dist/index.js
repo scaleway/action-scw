@@ -7053,6 +7053,7 @@ const spawnPromise = async (command, args) => new Promise((resolve, reject) => {
     const process = (0,external_child_process_.spawn)(command, args);
     process.stdout.setEncoding('utf-8');
     process.stderr.setEncoding('utf-8');
+    process.stdin.end();
     process.on('exit', code => {
         resolve({
             code,
