@@ -1,6 +1,7 @@
 import { HttpClient } from '@actions/http-client'
 
 export const VERSION_LATEST = 'latest'
+const USER_AGENT = 'scaleway/action-scw'
 
 // https://docs.github.com/en/rest/releases/releases?apiVersion=2022-11-28#get-the-latest-release
 type LatestPayload = {
@@ -10,7 +11,7 @@ type LatestPayload = {
 const latestUrl =
   'https://api.github.com/repos/scaleway/scaleway-cli/releases/latest'
 export const getLatest = async () => {
-  const httpClient = new HttpClient()
+  const httpClient = new HttpClient(USER_AGENT)
   const resp = await httpClient.getJson<LatestPayload>(latestUrl)
 
   if (resp.statusCode !== 200) {

@@ -6936,9 +6936,10 @@ var lib = __nccwpck_require__(7794);
 ;// CONCATENATED MODULE: ./lib/version.js
 
 const VERSION_LATEST = 'latest';
+const USER_AGENT = 'scaleway/action-scw';
 const latestUrl = 'https://api.github.com/repos/scaleway/scaleway-cli/releases/latest';
 const getLatest = async () => {
-    const httpClient = new lib.HttpClient();
+    const httpClient = new lib.HttpClient(USER_AGENT);
     const resp = await httpClient.getJson(latestUrl);
     if (resp.statusCode !== 200) {
         throw new Error(`Failed to fetch latest version (status: ${resp.statusCode})`);
