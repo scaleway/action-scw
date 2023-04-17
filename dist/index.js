@@ -6931,16 +6931,23 @@ var io = __nccwpck_require__(8629);
 var tool_cache = __nccwpck_require__(514);
 // EXTERNAL MODULE: external "fs"
 var external_fs_ = __nccwpck_require__(7147);
+// EXTERNAL MODULE: ./node_modules/.pnpm/@actions+http-client@2.1.0/node_modules/@actions/http-client/lib/index.js
+var lib = __nccwpck_require__(7794);
 ;// CONCATENATED MODULE: ./lib/version.js
+
 const VERSION_LATEST = 'latest';
 const latestUrl = 'https://api.github.com/repos/scaleway/scaleway-cli/releases/latest';
 const getLatest = async () => {
-    const resp = await fetch(latestUrl);
-    if (!resp.ok) {
-        throw new Error(`Failed to fetch latest version (status: ${resp.status})`);
+    const httpClient = new lib.HttpClient();
+    const resp = await httpClient.getJson(latestUrl);
+    if (resp.statusCode !== 200) {
+        throw new Error(`Failed to fetch latest version (status: ${resp.statusCode})`);
     }
-    const body = (await resp.json());
-    if (body.tag_name === undefined) {
+    const body = resp.result;
+    if (body === null) {
+        throw new Error('Missing body');
+    }
+    else if (body.tag_name === undefined) {
         throw new Error(`Missing tag_name in response when fetching latest version`);
     }
     else if (typeof body.tag_name !== 'string') {
