@@ -1,5 +1,6 @@
 import * as core from '@actions/core'
 import type { Args } from './input.js'
+import { run } from './run.js'
 
 export const exportConfig = (args: Args) => {
   core.exportVariable('SCW_ACCESS_KEY', args.accessKey)
@@ -20,3 +21,15 @@ export const importConfig = (): Args => ({
   exportConfig: '',
   saveConfig: '',
 })
+
+export const saveConfig = async (args: Args, cliPath?: string) => {
+  const initArgs = [
+    `secret-key=${args.secretKey}`,
+    `access-key=${args.accessKey}`,
+    `organization-id=${args.defaultOrganizationID}`,
+    `project-id=${args.defaultProjectID}`,
+    `send-telemetry=false`,
+    `install-autocomplete=false`,
+  ].join(' ')
+  await run(`init ${initArgs}`, cliPath)
+}

@@ -7019,43 +7019,6 @@ const fillEnv = (args) => {
     process.env.SCW_DEFAULT_PROJECT_ID = args.defaultProjectID;
 };
 
-;// CONCATENATED MODULE: ./lib/config.js
-
-const exportConfig = (args) => {
-    core.exportVariable('SCW_ACCESS_KEY', args.accessKey);
-    core.setSecret(args.secretKey);
-    core.exportVariable('SCW_SECRET_KEY', args.secretKey);
-    core.exportVariable('SCW_DEFAULT_ORGANIZATION_ID', args.defaultOrganizationID);
-    core.exportVariable('SCW_DEFAULT_PROJECT_ID', args.defaultProjectID);
-    core.exportVariable('SCW_CLI_VERSION', args.version);
-};
-const importConfig = () => ({
-    defaultOrganizationID: process.env.SCW_DEFAULT_ORGANIZATION_ID || '',
-    defaultProjectID: process.env.SCW_DEFAULT_PROJECT_ID || '',
-    secretKey: process.env.SCW_SECRET_KEY || '',
-    version: process.env.SCW_CLI_VERSION || '',
-    accessKey: process.env.SCW_ACCESS_KEY || '',
-    args: '',
-    exportConfig: '',
-    saveConfig: '',
-});
-
-;// CONCATENATED MODULE: ./lib/input.js
-
-
-
-const versionIsValid = (version) => {
-    if (version === VERSION_LATEST) {
-        return true;
-    }
-    if (!tool_cache.isExplicitVersion(version)) {
-        core.error('');
-        return false;
-    }
-    return true;
-};
-const validateArgs = (args) => !versionIsValid(args.version);
-
 // EXTERNAL MODULE: external "child_process"
 var external_child_process_ = __nccwpck_require__(2081);
 // EXTERNAL MODULE: ./node_modules/.pnpm/shell-quote@1.8.1/node_modules/shell-quote/index.js
@@ -7106,6 +7069,55 @@ const run = async (args, cliPath = 'scw') => {
     return res.stdout || '';
 };
 
+;// CONCATENATED MODULE: ./lib/config.js
+
+
+const exportConfig = (args) => {
+    core.exportVariable('SCW_ACCESS_KEY', args.accessKey);
+    core.setSecret(args.secretKey);
+    core.exportVariable('SCW_SECRET_KEY', args.secretKey);
+    core.exportVariable('SCW_DEFAULT_ORGANIZATION_ID', args.defaultOrganizationID);
+    core.exportVariable('SCW_DEFAULT_PROJECT_ID', args.defaultProjectID);
+    core.exportVariable('SCW_CLI_VERSION', args.version);
+};
+const importConfig = () => ({
+    defaultOrganizationID: process.env.SCW_DEFAULT_ORGANIZATION_ID || '',
+    defaultProjectID: process.env.SCW_DEFAULT_PROJECT_ID || '',
+    secretKey: process.env.SCW_SECRET_KEY || '',
+    version: process.env.SCW_CLI_VERSION || '',
+    accessKey: process.env.SCW_ACCESS_KEY || '',
+    args: '',
+    exportConfig: '',
+    saveConfig: '',
+});
+const saveConfig = async (args, cliPath) => {
+    const initArgs = [
+        `secret-key=${args.secretKey}`,
+        `access-key=${args.accessKey}`,
+        `organization-id=${args.defaultOrganizationID}`,
+        `project-id=${args.defaultProjectID}`,
+        `send-telemetry=false`,
+        `install-autocomplete=false`,
+    ].join(' ');
+    await run(`init ${initArgs}`, cliPath);
+};
+
+;// CONCATENATED MODULE: ./lib/input.js
+
+
+
+const versionIsValid = (version) => {
+    if (version === VERSION_LATEST) {
+        return true;
+    }
+    if (!tool_cache.isExplicitVersion(version)) {
+        core.error('');
+        return false;
+    }
+    return true;
+};
+const validateArgs = (args) => !versionIsValid(args.version);
+
 ;// CONCATENATED MODULE: ./lib/main.js
 
 
@@ -7132,9 +7144,6 @@ const main = async () => {
         return;
     }
     const cliPath = await install(args.version);
-    if (args.exportConfig) {
-        exportConfig(args);
-    }
     if (args.args) {
         fillEnv(args);
         try {
@@ -7152,6 +7161,12 @@ const main = async () => {
                 throw e;
             }
         }
+    }
+    if (args.exportConfig === 'true') {
+        exportConfig(args);
+    }
+    if (args.saveConfig === 'true') {
+        await saveConfig(args);
     }
 };
 // eslint-disable-next-line @typescript-eslint/no-floating-promises

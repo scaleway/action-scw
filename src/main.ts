@@ -1,14 +1,13 @@
 import * as core from '@actions/core'
 import path from 'path'
 import { fillEnv, install } from './cli.js'
-import { exportConfig, importConfig } from './config.js'
+import { exportConfig, importConfig, saveConfig } from './config.js'
 import { type Args, validateArgs } from './input.js'
 import { CLIError, run } from './run.js'
 import { VERSION_LATEST } from './version.js'
 
 const getArgs = (defaultArgs: Args): Args => ({
-  version:
-    core.getInput('version') || defaultArgs.version || VERSION_LATEST,
+  version: core.getInput('version') || defaultArgs.version || VERSION_LATEST,
   accessKey: core.getInput('access_key') || defaultArgs.accessKey,
   secretKey: core.getInput('secret_key') || defaultArgs.secretKey,
   defaultOrganizationID:
@@ -31,10 +30,6 @@ export const main = async () => {
 
   const cliPath = await install(args.version)
 
-  if (args.exportConfig) {
-    exportConfig(args)
-  }
-
   if (args.args) {
     fillEnv(args)
     try {
@@ -50,6 +45,14 @@ export const main = async () => {
         throw e
       }
     }
+  }
+
+  if (args.exportConfig === 'true') {
+    exportConfig(args)
+  }
+
+  if (args.saveConfig === 'true') {
+    await saveConfig(args)
   }
 }
 
