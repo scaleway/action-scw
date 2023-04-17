@@ -18,8 +18,8 @@ export const importConfig = (): Args => ({
   version: process.env.SCW_CLI_VERSION || '',
   accessKey: process.env.SCW_ACCESS_KEY || '',
   args: '',
-  exportConfig: '',
-  saveConfig: '',
+  exportConfig: false,
+  saveConfig: false,
 })
 
 export const saveConfig = async (args: Args, cliPath?: string) => {

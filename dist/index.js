@@ -7087,8 +7087,8 @@ const importConfig = () => ({
     version: process.env.SCW_CLI_VERSION || '',
     accessKey: process.env.SCW_ACCESS_KEY || '',
     args: '',
-    exportConfig: '',
-    saveConfig: '',
+    exportConfig: false,
+    saveConfig: false,
 });
 const saveConfig = async (args, cliPath) => {
     const initArgs = [
@@ -7134,8 +7134,8 @@ const getArgs = (defaultArgs) => ({
         defaultArgs.defaultOrganizationID,
     defaultProjectID: core.getInput('default_project_id') || defaultArgs.defaultProjectID,
     args: core.getInput('args') || defaultArgs.args,
-    saveConfig: core.getInput('save_config') || defaultArgs.saveConfig,
-    exportConfig: core.getInput('export_config') || defaultArgs.exportConfig,
+    saveConfig: core.getBooleanInput('save_config') || defaultArgs.saveConfig,
+    exportConfig: core.getBooleanInput('export_config') || defaultArgs.exportConfig,
 });
 const main = async () => {
     const configArgs = importConfig();
@@ -7162,10 +7162,10 @@ const main = async () => {
             }
         }
     }
-    if (args.exportConfig === 'true') {
+    if (args.exportConfig) {
         exportConfig(args);
     }
-    if (args.saveConfig === 'true') {
+    if (args.saveConfig) {
         await saveConfig(args);
     }
 };

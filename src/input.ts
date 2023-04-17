@@ -9,8 +9,8 @@ export type Args = {
   defaultOrganizationID: string
   defaultProjectID: string
   args: string
-  saveConfig: string
-  exportConfig: string
+  saveConfig: boolean
+  exportConfig: boolean
 }
 
 const versionIsValid = (version: string): boolean => {

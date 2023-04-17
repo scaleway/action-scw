@@ -12,10 +12,12 @@ inputs:
       Save scaleway profile to a config file in user home to use it in manual commands
       Will leave the config in CLI config folder after the step
     required: false
+    default: 'false'
   export_config:
     description: |
       Export scaleway profile to environment variables that will be available in next steps
     required: false
+    default: 'false'
   access_key:
     description: 'Scaleway access key'
     required: false

@@ -16,8 +16,9 @@ const getArgs = (defaultArgs: Args): Args => ({
   defaultProjectID:
     core.getInput('default_project_id') || defaultArgs.defaultProjectID,
   args: core.getInput('args') || defaultArgs.args,
-  saveConfig: core.getInput('save_config') || defaultArgs.saveConfig,
-  exportConfig: core.getInput('export_config') || defaultArgs.exportConfig,
+  saveConfig: core.getBooleanInput('save_config') || defaultArgs.saveConfig,
+  exportConfig:
+    core.getBooleanInput('export_config') || defaultArgs.exportConfig,
 })
 
 export const main = async () => {
@@ -47,11 +48,11 @@ export const main = async () => {
     }
   }
 
-  if (args.exportConfig === 'true') {
+  if (args.exportConfig) {
     exportConfig(args)
   }
 
-  if (args.saveConfig === 'true') {
+  if (args.saveConfig) {
     await saveConfig(args)
   }
 }
