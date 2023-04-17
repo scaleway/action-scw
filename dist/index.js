@@ -7013,10 +7013,18 @@ const install = async (requestedVersion) => {
     return toolPath;
 };
 const fillEnv = (args) => {
-    process.env.SCW_ACCESS_KEY = args.accessKey;
-    process.env.SCW_SECRET_KEY = args.secretKey;
-    process.env.SCW_DEFAULT_ORGANIZATION_ID = args.defaultOrganizationID;
-    process.env.SCW_DEFAULT_PROJECT_ID = args.defaultProjectID;
+    if (args.accessKey) {
+        process.env.SCW_ACCESS_KEY = args.accessKey;
+    }
+    if (args.secretKey) {
+        process.env.SCW_SECRET_KEY = args.secretKey;
+    }
+    if (args.defaultOrganizationID) {
+        process.env.SCW_DEFAULT_ORGANIZATION_ID = args.defaultOrganizationID;
+    }
+    if (args.defaultProjectID) {
+        process.env.SCW_DEFAULT_PROJECT_ID = args.defaultProjectID;
+    }
 };
 
 // EXTERNAL MODULE: external "child_process"
