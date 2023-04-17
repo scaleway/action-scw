@@ -28,7 +28,7 @@ jobs:
       - name: Install CLI
         uses: ./
         with:
-          version: v2.13.0
+          version: latest
         env:
           RUNNER_DEBUG: 1
       - name: Find CLI
@@ -105,15 +105,20 @@ jobs:
           default_project_id: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
           default_organization_id: ${{ secrets.SCW_DEFAULT_ORGANIZATION_ID }}
       - name: Use CLI manually with saved config
-        id: cli
+        id: cli_manual
         run: echo "json=$(scw -o json instance server-type list)" >> $GITHUB_OUTPUT
       - name: Check output
         run: |
-          [ "$( echo '${{ steps.cli.outputs.json }}' | jq -r 'type')" = "array" ]
+          [ "$( echo '${{ steps.cli_manual.outputs.json }}' | jq -r 'type')" = "array" ]
       - name: Use CLI with saved config
         uses: ./
+        id: cli
         with:
+          version: v2.13.0
           args: instance server-type list
+      - name: Check output
+        run: |
+          [ "$( echo '${{ steps.cli.outputs.json }}' | jq -r 'type')" = "array" ]
       - name: Save again
         uses: ./
         with:
