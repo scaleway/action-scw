@@ -23,13 +23,16 @@ export const importConfig = (): Args => ({
 })
 
 export const saveConfig = async (args: Args, cliPath?: string) => {
-  const initArgs = [
-    `secret-key=${args.secretKey}`,
-    `access-key=${args.accessKey}`,
-    `organization-id=${args.defaultOrganizationID}`,
-    `project-id=${args.defaultProjectID}`,
-    `send-telemetry=false`,
-    `install-autocomplete=false`,
-  ].join(' ')
-  await run(`init ${initArgs}`, cliPath)
+  await run(
+    [
+      'init',
+      `secret-key=${args.secretKey}`,
+      `access-key=${args.accessKey}`,
+      `organization-id=${args.defaultOrganizationID}`,
+      `project-id=${args.defaultProjectID}`,
+      `send-telemetry=false`,
+      `install-autocomplete=false`,
+    ],
+    cliPath,
+  )
 }

@@ -46,13 +46,17 @@ const parseCmdArgs = (args: string) =>
     return arg
   })
 
-export const run = async (args: string, cliPath = 'scw') => {
-  const defaultArgs = ['-o=json']
+export const run = async (args: string | string[], cliPath = 'scw') => {
+  let cmdArgs = ['-o=json']
   if (core.isDebug()) {
-    defaultArgs.push('--debug')
+    cmdArgs.push('--debug')
   }
 
-  const cmdArgs = defaultArgs.concat(parseCmdArgs(args))
+  if (typeof args === 'string') {
+    cmdArgs = cmdArgs.concat(parseCmdArgs(args))
+  } else {
+    cmdArgs = cmdArgs.concat(args)
+  }
 
   const res = await spawnPromise(cliPath, cmdArgs)
   if (res.code !== 0) {

@@ -7072,11 +7072,16 @@ const parseCmdArgs = (args) => (0,shell_quote.parse)(args).map(arg => {
     return arg;
 });
 const run = async (args, cliPath = 'scw') => {
-    const defaultArgs = ['-o=json'];
+    let cmdArgs = ['-o=json'];
     if (core.isDebug()) {
-        defaultArgs.push('--debug');
+        cmdArgs.push('--debug');
     }
-    const cmdArgs = defaultArgs.concat(parseCmdArgs(args));
+    if (typeof args === 'string') {
+        cmdArgs = cmdArgs.concat(parseCmdArgs(args));
+    }
+    else {
+        cmdArgs = cmdArgs.concat(args);
+    }
     const res = await spawnPromise(cliPath, cmdArgs);
     if (res.code !== 0) {
         core.info(res.stderr || '');
@@ -7108,15 +7113,15 @@ const importConfig = () => ({
     saveConfig: false,
 });
 const saveConfig = async (args, cliPath) => {
-    const initArgs = [
+    await run([
+        'init',
         `secret-key=${args.secretKey}`,
         `access-key=${args.accessKey}`,
         `organization-id=${args.defaultOrganizationID}`,
         `project-id=${args.defaultProjectID}`,
         `send-telemetry=false`,
         `install-autocomplete=false`,
-    ].join(' ');
-    await run(`init ${initArgs}`, cliPath);
+    ], cliPath);
 };
 
 ;// CONCATENATED MODULE: ./lib/input.js
