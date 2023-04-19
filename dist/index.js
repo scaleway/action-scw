@@ -6188,7 +6188,7 @@ var _v = _interopRequireDefault(__nccwpck_require__(9370));
 
 var _v2 = _interopRequireDefault(__nccwpck_require__(8638));
 
-var _v3 = _interopRequireDefault(__nccwpck_require__(3519));
+var _v3 = _interopRequireDefault(__nccwpck_require__(3964));
 
 var _v4 = _interopRequireDefault(__nccwpck_require__(8239));
 
@@ -6637,7 +6637,7 @@ function _default(name, version, hashfunc) {
 
 /***/ }),
 
-/***/ 3519:
+/***/ 3964:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 
@@ -6931,16 +6931,24 @@ var io = __nccwpck_require__(8629);
 var tool_cache = __nccwpck_require__(514);
 // EXTERNAL MODULE: external "fs"
 var external_fs_ = __nccwpck_require__(7147);
+// EXTERNAL MODULE: ./node_modules/.pnpm/@actions+http-client@2.1.0/node_modules/@actions/http-client/lib/index.js
+var lib = __nccwpck_require__(7794);
 ;// CONCATENATED MODULE: ./lib/version.js
+
 const VERSION_LATEST = 'latest';
+const USER_AGENT = 'scaleway/action-scw';
 const latestUrl = 'https://api.github.com/repos/scaleway/scaleway-cli/releases/latest';
 const getLatest = async () => {
-    const resp = await fetch(latestUrl);
-    if (!resp.ok) {
-        throw new Error(`Failed to fetch latest version (status: ${resp.status})`);
+    const httpClient = new lib.HttpClient(USER_AGENT);
+    const resp = await httpClient.getJson(latestUrl);
+    if (resp.statusCode !== 200) {
+        throw new Error(`Failed to fetch latest version (status: ${resp.statusCode})`);
     }
-    const body = (await resp.json());
-    if (body.tag_name === undefined) {
+    const body = resp.result;
+    if (body === null) {
+        throw new Error('Missing body when fetching latest version');
+    }
+    else if (body.tag_name === undefined) {
         throw new Error(`Missing tag_name in response when fetching latest version`);
     }
     else if (typeof body.tag_name !== 'string') {
@@ -7013,27 +7021,19 @@ const install = async (requestedVersion) => {
     return toolPath;
 };
 const fillEnv = (args) => {
-    process.env.SCW_ACCESS_KEY = args.accessKey;
-    process.env.SCW_SECRET_KEY = args.secretKey;
-    process.env.SCW_DEFAULT_ORGANIZATION_ID = args.defaultOrganizationID;
-    process.env.SCW_DEFAULT_PROJECT_ID = args.defaultProjectID;
-};
-
-;// CONCATENATED MODULE: ./lib/input.js
-
-
-
-const versionIsValid = (version) => {
-    if (version === VERSION_LATEST) {
-        return true;
+    if (args.accessKey) {
+        process.env.SCW_ACCESS_KEY = args.accessKey;
     }
-    if (!tool_cache.isExplicitVersion(version)) {
-        core.error('');
-        return false;
+    if (args.secretKey) {
+        process.env.SCW_SECRET_KEY = args.secretKey;
     }
-    return true;
+    if (args.defaultOrganizationID) {
+        process.env.SCW_DEFAULT_ORGANIZATION_ID = args.defaultOrganizationID;
+    }
+    if (args.defaultProjectID) {
+        process.env.SCW_DEFAULT_PROJECT_ID = args.defaultProjectID;
+    }
 };
-const validateArgs = (args) => !versionIsValid(args.version);
 
 // EXTERNAL MODULE: external "child_process"
 var external_child_process_ = __nccwpck_require__(2081);
@@ -7053,6 +7053,7 @@ const spawnPromise = async (command, args) => new Promise((resolve, reject) => {
     const process = (0,external_child_process_.spawn)(command, args);
     process.stdout.setEncoding('utf-8');
     process.stderr.setEncoding('utf-8');
+    process.stdin.end();
     process.on('exit', code => {
         resolve({
             code,
@@ -7071,11 +7072,16 @@ const parseCmdArgs = (args) => (0,shell_quote.parse)(args).map(arg => {
     return arg;
 });
 const run = async (args, cliPath = 'scw') => {
-    const defaultArgs = ['-o=json'];
+    let cmdArgs = ['-o=json'];
     if (core.isDebug()) {
-        defaultArgs.push('--debug');
+        cmdArgs.push('--debug');
     }
-    const cmdArgs = defaultArgs.concat(parseCmdArgs(args));
+    if (typeof args === 'string') {
+        cmdArgs = cmdArgs.concat(parseCmdArgs(args));
+    }
+    else {
+        cmdArgs = cmdArgs.concat(args);
+    }
     const res = await spawnPromise(cliPath, cmdArgs);
     if (res.code !== 0) {
         core.info(res.stderr || '');
@@ -7085,24 +7091,77 @@ const run = async (args, cliPath = 'scw') => {
     return res.stdout || '';
 };
 
+;// CONCATENATED MODULE: ./lib/config.js
+
+
+const exportConfig = (args) => {
+    core.exportVariable('SCW_ACCESS_KEY', args.accessKey);
+    core.setSecret(args.secretKey);
+    core.exportVariable('SCW_SECRET_KEY', args.secretKey);
+    core.exportVariable('SCW_DEFAULT_ORGANIZATION_ID', args.defaultOrganizationID);
+    core.exportVariable('SCW_DEFAULT_PROJECT_ID', args.defaultProjectID);
+    core.exportVariable('SCW_CLI_VERSION', args.version);
+};
+const importConfig = () => ({
+    defaultOrganizationID: process.env.SCW_DEFAULT_ORGANIZATION_ID ?? '',
+    defaultProjectID: process.env.SCW_DEFAULT_PROJECT_ID ?? '',
+    secretKey: process.env.SCW_SECRET_KEY ?? '',
+    version: process.env.SCW_CLI_VERSION ?? '',
+    accessKey: process.env.SCW_ACCESS_KEY ?? '',
+    args: '',
+    exportConfig: false,
+    saveConfig: false,
+});
+const saveConfig = async (args, cliPath) => {
+    await run([
+        'init',
+        `secret-key=${args.secretKey}`,
+        `access-key=${args.accessKey}`,
+        `organization-id=${args.defaultOrganizationID}`,
+        `project-id=${args.defaultProjectID}`,
+        `send-telemetry=false`,
+        `install-autocomplete=false`,
+    ], cliPath);
+};
+
+;// CONCATENATED MODULE: ./lib/input.js
+
+
+
+const versionIsValid = (version) => {
+    if (version === VERSION_LATEST) {
+        return true;
+    }
+    if (!tool_cache.isExplicitVersion(version)) {
+        core.error('');
+        return false;
+    }
+    return true;
+};
+const validateArgs = (args) => !versionIsValid(args.version);
+
 ;// CONCATENATED MODULE: ./lib/main.js
 
 
 
 
 
-const getArgs = () => ({
-    version: core.getInput('version', {
-        required: true,
-    }),
-    accessKey: core.getInput('access_key'),
-    secretKey: core.getInput('secret_key'),
-    defaultOrganizationID: core.getInput('default_organization_id'),
-    defaultProjectID: core.getInput('default_project_id'),
-    args: core.getInput('args'),
+
+
+const getArgs = (defaultArgs) => ({
+    version: core.getInput('version') || defaultArgs.version || VERSION_LATEST,
+    accessKey: core.getInput('access-key') || defaultArgs.accessKey,
+    secretKey: core.getInput('secret-key') || defaultArgs.secretKey,
+    defaultOrganizationID: core.getInput('default-organization-id') ||
+        defaultArgs.defaultOrganizationID,
+    defaultProjectID: core.getInput('default-project-id') || defaultArgs.defaultProjectID,
+    args: core.getInput('args') || defaultArgs.args,
+    saveConfig: core.getBooleanInput('save-config') || defaultArgs.saveConfig,
+    exportConfig: core.getBooleanInput('export-config') || defaultArgs.exportConfig,
 });
 const main = async () => {
-    const args = getArgs();
+    const configArgs = importConfig();
+    const args = getArgs(configArgs);
     if (validateArgs(args)) {
         return;
     }
@@ -7124,6 +7183,12 @@ const main = async () => {
                 throw e;
             }
         }
+    }
+    if (args.exportConfig) {
+        exportConfig(args);
+    }
+    if (args.saveConfig) {
+        await saveConfig(args);
     }
 };
 // eslint-disable-next-line @typescript-eslint/no-floating-promises

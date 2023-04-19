@@ -1,22 +1,29 @@
 import * as core from '@actions/core'
 import path from 'path'
 import { fillEnv, install } from './cli.js'
+import { exportConfig, importConfig, saveConfig } from './config.js'
 import { type Args, validateArgs } from './input.js'
 import { CLIError, run } from './run.js'
+import { VERSION_LATEST } from './version.js'
 
-const getArgs = (): Args => ({
-  version: core.getInput('version', {
-    required: true,
-  }),
-  accessKey: core.getInput('access_key'),
-  secretKey: core.getInput('secret_key'),
-  defaultOrganizationID: core.getInput('default_organization_id'),
-  defaultProjectID: core.getInput('default_project_id'),
-  args: core.getInput('args'),
+const getArgs = (defaultArgs: Args): Args => ({
+  version: core.getInput('version') || defaultArgs.version || VERSION_LATEST,
+  accessKey: core.getInput('access-key') || defaultArgs.accessKey,
+  secretKey: core.getInput('secret-key') || defaultArgs.secretKey,
+  defaultOrganizationID:
+    core.getInput('default-organization-id') ||
+    defaultArgs.defaultOrganizationID,
+  defaultProjectID:
+    core.getInput('default-project-id') || defaultArgs.defaultProjectID,
+  args: core.getInput('args') || defaultArgs.args,
+  saveConfig: core.getBooleanInput('save-config') || defaultArgs.saveConfig,
+  exportConfig:
+    core.getBooleanInput('export-config') || defaultArgs.exportConfig,
 })
 
 export const main = async () => {
-  const args = getArgs()
+  const configArgs = importConfig()
+  const args = getArgs(configArgs)
 
   if (validateArgs(args)) {
     return
@@ -39,6 +46,14 @@ export const main = async () => {
         throw e
       }
     }
+  }
+
+  if (args.exportConfig) {
+    exportConfig(args)
+  }
+
+  if (args.saveConfig) {
+    await saveConfig(args)
   }
 }
 

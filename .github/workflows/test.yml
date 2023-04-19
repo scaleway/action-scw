@@ -28,7 +28,7 @@ jobs:
       - name: Install CLI
         uses: ./
         with:
-          version: v2.13.0
+          version: latest
         env:
           RUNNER_DEBUG: 1
       - name: Find CLI
@@ -46,10 +46,92 @@ jobs:
         with:
           args: instance server-type list
           version: v2.13.0
-          access_key: ${{ secrets.SCW_ACCESS_KEY }}
-          secret_key: ${{ secrets.SCW_SECRET_KEY }}
-          default_project_id: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
-          default_organization_id: ${{ secrets.SCW_DEFAULT_ORGANIZATION_ID }}
+          access-key: ${{ secrets.SCW_ACCESS_KEY }}
+          secret-key: ${{ secrets.SCW_SECRET_KEY }}
+          default-project-id: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
+          default-organization-id: ${{ secrets.SCW_DEFAULT_ORGANIZATION_ID }}
       - name: Check output
         run: |
           [ "$( echo '${{ steps.cli.outputs.json }}' | jq -r 'type')" = "array" ]
+  test_action_export_config:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install CLI and export config
+        uses: ./
+        with:
+          export-config: true
+          version: v2.13.0
+          access-key: ${{ secrets.SCW_ACCESS_KEY }}
+          secret-key: ${{ secrets.SCW_SECRET_KEY }}
+          default-project-id: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
+          default-organization-id: ${{ secrets.SCW_DEFAULT_ORGANIZATION_ID }}
+      - name: Use CLI with exported config
+        uses: ./
+        id: cli
+        with:
+          args: instance server-type list
+      - name: Check output
+        run: |
+          [ "$( echo '${{ steps.cli.outputs.json }}' | jq -r 'type')" = "array" ]
+      - name: Use CLI manually with exported config
+        id: cli_manual
+        run: echo "json=$(scw -o json instance server-type list)" >> $GITHUB_OUTPUT
+      - name: Check output
+        run: |
+          [ "$( echo '${{ steps.cli_manual.outputs.json }}' | jq -r 'type')" = "array" ]
+      - name: Export again
+        uses: ./
+        with:
+          export-config: true
+          version: v2.13.0
+          access-key: ${{ secrets.SCW_ACCESS_KEY }}
+          secret-key: ${{ secrets.SCW_SECRET_KEY }}
+          default-project-id: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
+          default-organization-id: ${{ secrets.SCW_DEFAULT_ORGANIZATION_ID }}
+  test_action_save_config:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install CLI and save config
+        uses: ./
+        with:
+          save-config: true
+          version: v2.13.0
+          access-key: ${{ secrets.SCW_ACCESS_KEY }}
+          secret-key: ${{ secrets.SCW_SECRET_KEY }}
+          default-project-id: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
+          default-organization-id: ${{ secrets.SCW_DEFAULT_ORGANIZATION_ID }}
+      - name: Use CLI manually with saved config
+        id: cli_manual
+        run: echo "json=$(scw -o json instance server-type list)" >> $GITHUB_OUTPUT
+      - name: Check output
+        run: |
+          [ "$( echo '${{ steps.cli_manual.outputs.json }}' | jq -r 'type')" = "array" ]
+      - name: Check CLI config
+        uses: ./
+        with:
+          version: v2.13.0
+          args: config info
+        env:
+          RUNNER_DEBUG: true
+      - name: Use CLI with saved config
+        uses: ./
+        id: cli
+        with:
+          version: v2.13.0
+          args: instance server-type list
+      - name: Check output
+        run: |
+          [ "$( echo '${{ steps.cli.outputs.json }}' | jq -r 'type')" = "array" ]
+      - name: Save again
+        uses: ./
+        with:
+          save-config: true
+          version: v2.13.0
+          access-key: ${{ secrets.SCW_ACCESS_KEY }}
+          secret-key: ${{ secrets.SCW_SECRET_KEY }}
+          default-project-id: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
+          default-organization-id: ${{ secrets.SCW_DEFAULT_ORGANIZATION_ID }}
