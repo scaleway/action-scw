@@ -53,6 +53,17 @@ jobs:
       - name: Check output
         run: |
           [ "$( echo '${{ steps.cli.outputs.json }}' | jq -r 'type')" = "array" ]
+      - name: Use CLI manually
+        id: cli_manual
+        run: echo "json=$(scw -o json instance server-type list)" >> $GITHUB_OUTPUT
+        env:
+          SCW_ACCESS_KEY: ${{ secrets.SCW_ACCESS_KEY }}
+          SCW_SECRET_KEY: ${{ secrets.SCW_SECRET_KEY }}
+          SCW_DEFAULT_PROJECT_ID: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
+          SCW_DEFAULT_ORGANIZATION_ID: ${{ secrets.SCW_DEFAULT_ORGANIZATION_ID }}
+      - name: Check output
+        run: |
+          [ "$( echo '${{ steps.cli_manual.outputs.json }}' | jq -r 'type')" = "array" ]
   test_action_export_config:
     runs-on: ubuntu-latest
     steps:
