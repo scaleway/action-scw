@@ -9,6 +9,8 @@ This action install [scaleway-cli](https://github.com/scaleway/scaleway-cli) and
 - `save_config`: save your config to scaleway's config file, useful to use it with other tools like terraform or SDKs
 - `export_config`: export your config to the environment to use the same action in the next steps
 
+Checkout CLI's [config documentation](https://github.com/scaleway/scaleway-cli/blob/master/docs/commands/config.md)
+
 ```yml
 - name: Use CLI
   uses: scaleway/action-scw@v0
@@ -34,3 +36,11 @@ This action install [scaleway-cli](https://github.com/scaleway/scaleway-cli) and
     args: instance server get ${{ env.SERVER_ID }}
 - run: echo ${{ steps.cli.outputs.json }}
 ```
+
+### Others
+
+- `version`: default to latest, must be exact version. Fetched from exported config if available
+- `access-key`
+- `secret-key`
+- `default-project-id`
+- `default-organization-id`
