@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install CLI and create config file
-        uses: scaleway/action-scw
+        uses: scaleway/action-scw@v0
         with:
           version: v2.14.0
           access_key: ${{ secrets.SCW_ACCESS_KEY }}
@@ -18,7 +18,7 @@ jobs:
 
       - run: scw instance server list
 
-      - uses: scaleway/action-scw
+      - uses: scaleway/action-scw@v0
         with:
           version: v2.14.0
           args: instance server list

@@ -7,10 +7,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install CLI
-        uses: scaleway/action-scw
+        uses: scaleway/action-scw@v0
         with:
           version: v2.14.0
-      - run: scw instance server start ${{ env.SERVER_ID }}
+      - run: scw instance server start --wait ${{ env.SERVER_ID }}
         env:
           SCW_ACCESS_KEY: ${{ secrets.SCW_ACCESS_KEY }}
           SCW_SECRET_KEY: ${{ secrets.SCW_SECRET_KEY }}

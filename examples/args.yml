@@ -8,7 +8,7 @@ jobs:
     steps:
       - name: Install CLI
         id: cli
-        uses: scaleway/action-scw
+        uses: scaleway/action-scw@v0
         with:
           version: v2.14.0
           args: instance server start ${{ env.SERVER_ID }}

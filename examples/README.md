@@ -2,7 +2,7 @@
 
 ## [Simple](install.yml)
 
-Install CLI using action-scw and use the cli in next steps.
+Install CLI using action-scw and use the cli manually in next steps.
 
 ## [Args](args.yml)
 
