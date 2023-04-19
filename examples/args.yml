@@ -1,0 +1,19 @@
+name: Use CLI
+
+on: [push, pull_request]
+
+jobs:
+  example_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install CLI
+        id: cli
+        uses: scaleway/action-scw@v0
+        with:
+          version: v2.14.0
+          args: instance server start ${{ env.SERVER_ID }}
+          access_key: ${{ secrets.SCW_ACCESS_KEY }}
+          secret_key: ${{ secrets.SCW_SECRET_KEY }}
+          default_project_id: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
+          default_organization_id: ${{ secrets.SCW_DEFAULT_ORGANIZATION_ID }}
+      - run: echo '${{ steps.cli.outputs.json }}'
