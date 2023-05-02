@@ -1,5 +1,8 @@
-name: "Scaleway CLI action"
+name: "Scaleway CLI"
 description: "Install and use Scaleway CLI"
+branding:
+  icon: terminal
+  color: purple
 inputs:
   version:
     description: 'CLI version, will default to latest or exported version'
