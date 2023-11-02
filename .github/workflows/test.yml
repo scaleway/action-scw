@@ -45,7 +45,7 @@ jobs:
         uses: ./
         with:
           args: instance server-type list
-          version: v2.13.0
+          version: v2.24.0
           access-key: ${{ secrets.SCW_ACCESS_KEY }}
           secret-key: ${{ secrets.SCW_SECRET_KEY }}
           default-project-id: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
@@ -73,7 +73,7 @@ jobs:
         uses: ./
         with:
           export-config: true
-          version: v2.13.0
+          version: v2.24.0
           access-key: ${{ secrets.SCW_ACCESS_KEY }}
           secret-key: ${{ secrets.SCW_SECRET_KEY }}
           default-project-id: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
@@ -96,7 +96,7 @@ jobs:
         uses: ./
         with:
           export-config: true
-          version: v2.13.0
+          version: v2.24.0
           access-key: ${{ secrets.SCW_ACCESS_KEY }}
           secret-key: ${{ secrets.SCW_SECRET_KEY }}
           default-project-id: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
@@ -110,7 +110,7 @@ jobs:
         uses: ./
         with:
           save-config: true
-          version: v2.13.0
+          version: v2.24.0
           access-key: ${{ secrets.SCW_ACCESS_KEY }}
           secret-key: ${{ secrets.SCW_SECRET_KEY }}
           default-project-id: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
@@ -124,7 +124,7 @@ jobs:
       - name: Check CLI config
         uses: ./
         with:
-          version: v2.13.0
+          version: v2.24.0
           args: config info
         env:
           RUNNER_DEBUG: true
@@ -132,7 +132,7 @@ jobs:
         uses: ./
         id: cli
         with:
-          version: v2.13.0
+          version: v2.24.0
           args: instance server-type list
       - name: Check output
         run: |
@@ -141,7 +141,7 @@ jobs:
         uses: ./
         with:
           save-config: true
-          version: v2.13.0
+          version: v2.24.0
           access-key: ${{ secrets.SCW_ACCESS_KEY }}
           secret-key: ${{ secrets.SCW_SECRET_KEY }}
           default-project-id: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
