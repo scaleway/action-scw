@@ -16,7 +16,7 @@
     "prettier": "prettier -c src/**/*.ts",
     "prettier-fix": "prettier -w src/**/*.ts",
     "package": "ncc build -o dist",
-    "all": "pnpm build && pnpm package"
+    "all": "pnpm install && pnpm build && pnpm package"
   },
   "repository": {
     "type": "git",
@@ -45,7 +45,7 @@
   "dependencies": {
     "@actions/core": "^1.10.0",
     "@actions/github": "^6.0.0",
-    "@actions/http-client": "^2.1.0",
+    "@actions/http-client": "^2.2.1",
     "@actions/io": "^1.1.3",
     "@actions/tool-cache": "^2.0.1",
     "shell-quote": "^1.8.1"
