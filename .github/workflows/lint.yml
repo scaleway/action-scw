@@ -10,10 +10,10 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2.2.4
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3.0.0
       - name: Set Node.js
-        uses: actions/setup-node@v3.6.0
+        uses: actions/setup-node@v4.0.2
         with:
           cache: 'pnpm'
           node-version: 20.x
