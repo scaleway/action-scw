@@ -35,7 +35,7 @@
     "@types/node": "^20.12.6",
     "@types/shell-quote": "^1.7.5",
     "@typescript-eslint/parser": "^7.6.0",
-    "@vercel/ncc": "^0.36.1",
+    "@vercel/ncc": "^0.38.1",
     "eslint": "^8.57.0",
     "eslint-plugin-deprecation": "^2.0.0",
     "eslint-plugin-tsdoc": "^0.2.17",
