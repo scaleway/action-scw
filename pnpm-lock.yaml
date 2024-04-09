@@ -32,8 +32,8 @@ devDependencies:
     specifier: ^20.12.6
     version: 20.12.6
   '@types/shell-quote':
-    specifier: ^1.7.1
-    version: 1.7.1
+    specifier: ^1.7.5
+    version: 1.7.5
   '@typescript-eslint/parser':
     specifier: ^5.57.1
     version: 5.57.1(eslint@8.37.0)(typescript@5.4.4)
@@ -365,8 +365,8 @@ packages:
     resolution: {integrity: sha512-I8EUhyrgfLrcTkzV3TSsGyl1tSuPrEDzr0yd5m90UgNxQkyDXULk3b6MlQqTCpZpNtWe1K0hzclnZkTcLBe2UQ==}
     dev: true
 
-  /@types/shell-quote@1.7.1:
-    resolution: {integrity: sha512-SWZ2Nom1pkyXCDohRSrkSKvDh8QOG9RfAsrt5/NsPQC4UQJ55eG0qClA40I+Gkez4KTQ0uDUT8ELRXThf3J5jw==}
+  /@types/shell-quote@1.7.5:
+    resolution: {integrity: sha512-+UE8GAGRPbJVQDdxi16dgadcBfQ+KG2vgZhV1+3A1XmHbmwcdwhCUwIdy+d3pAGrbvgRoVSjeI9vOWyq376Yzw==}
     dev: true
 
   /@typescript-eslint/eslint-plugin@5.57.0(@typescript-eslint/parser@5.57.1)(eslint@8.37.0)(typescript@5.4.4):
