@@ -12,8 +12,8 @@ dependencies:
     specifier: ^6.0.0
     version: 6.0.0
   '@actions/http-client':
-    specifier: ^2.1.0
-    version: 2.1.0
+    specifier: ^2.2.1
+    version: 2.2.1
   '@actions/io':
     specifier: ^1.1.3
     version: 1.1.3
@@ -61,7 +61,7 @@ packages:
   /@actions/core@1.10.0:
     resolution: {integrity: sha512-2aZDDa3zrrZbP5ZYg159sNoLRb61nQ7awl5pSvIq5Qpj81vwDzdMRKzkWJGJuwVvWpvZKx7vspJALyvaaIQyug==}
     dependencies:
-      '@actions/http-client': 2.1.0
+      '@actions/http-client': 2.2.1
       uuid: 8.3.2
     dev: false
 
@@ -80,12 +80,6 @@ packages:
       '@octokit/plugin-rest-endpoint-methods': 10.4.1(@octokit/core@5.2.0)
     dev: false
 
-  /@actions/http-client@2.1.0:
-    resolution: {integrity: sha512-BonhODnXr3amchh4qkmjPMUO8mFi/zLaaCeCAJZqch8iQqyDnVIkySjB38VHAC8IJ+bnlgfOqlhpyCUZHlQsqw==}
-    dependencies:
-      tunnel: 0.0.6
-    dev: false
-
   /@actions/http-client@2.2.1:
     resolution: {integrity: sha512-KhC/cZsq7f8I4LfZSJKgCvEwfkE8o1538VoBeoGzokVLLnbFDEAdFD3UhoMklxo2un9NJVBdANOresx7vTHlHw==}
     dependencies:
@@ -102,7 +96,7 @@ packages:
     dependencies:
       '@actions/core': 1.10.0
       '@actions/exec': 1.1.1
-      '@actions/http-client': 2.1.0
+      '@actions/http-client': 2.2.1
       '@actions/io': 1.1.3
       semver: 6.3.1
       uuid: 3.4.0
