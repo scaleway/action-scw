@@ -1,6 +1,9 @@
 name: Use CLI
 
-on: [push, pull_request]
+on:
+  push:
+  pull_request:
+  merge_group:
 
 jobs:
   example_job:
@@ -10,7 +13,7 @@ jobs:
         id: cli
         uses: scaleway/action-scw@v0
         with:
-          version: v2.14.0
+          version: v2.29.0
           args: instance server start ${{ env.SERVER_ID }}
           access_key: ${{ secrets.SCW_ACCESS_KEY }}
           secret_key: ${{ secrets.SCW_SECRET_KEY }}
