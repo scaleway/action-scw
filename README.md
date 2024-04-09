@@ -17,7 +17,7 @@ Checkout CLI's [config documentation](https://github.com/scaleway/scaleway-cli/b
   with:
     save_config: true
     export_config: true
-    version: v2.13.0
+    version: v2.24.0
     access-key: ${{ secrets.SCW_ACCESS_KEY }}
     secret-key: ${{ secrets.SCW_SECRET_KEY }}
     default-project-id: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
