@@ -11,13 +11,12 @@
   "packageManager": "pnpm@8.15.6",
   "scripts": {
     "build": "tsc",
-    "install": "pnpm install",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint src/**/*.ts",
     "prettier": "prettier -c src/**/*.ts",
     "prettier-fix": "prettier -w src/**/*.ts",
     "package": "ncc build -o dist",
-    "all": "pnpm build && pnpm package"
+    "all": "pnpm install && pnpm build && pnpm package"
   },
   "repository": {
     "type": "git",
