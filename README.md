@@ -15,8 +15,8 @@ Checkout CLI's [config documentation](https://github.com/scaleway/scaleway-cli/b
 - name: Use CLI
   uses: scaleway/action-scw@v0
   with:
-    save_config: true
-    export_config: true
+    save-config: true
+    export-config: true
     version: v2.24.0
     access-key: ${{ secrets.SCW_ACCESS_KEY }}
     secret-key: ${{ secrets.SCW_SECRET_KEY }}
