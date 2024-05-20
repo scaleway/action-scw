@@ -30837,6 +30837,8 @@ var io = __nccwpck_require__(2826);
 var tool_cache = __nccwpck_require__(5561);
 // EXTERNAL MODULE: external "fs"
 var external_fs_ = __nccwpck_require__(7147);
+// EXTERNAL MODULE: external "os"
+var external_os_ = __nccwpck_require__(2037);
 // EXTERNAL MODULE: ./node_modules/.pnpm/@actions+http-client@2.2.1/node_modules/@actions/http-client/lib/index.js
 var lib = __nccwpck_require__(6372);
 ;// CONCATENATED MODULE: ./lib/version.js
@@ -30871,13 +30873,36 @@ const getLatest = async () => {
 
 
 
+
 const TOOL_NAME = 'scw';
+const PLATFORM_MAP = {
+    darwin: 'darwin',
+    freebsd: 'freebsd',
+    win32: 'windows',
+};
+const ARCH_MAP = {
+    arm64: 'arm64',
+    i386: '386',
+};
 const downloadURL = (targetVersion) => {
     let version = targetVersion;
+    let platform = 'linux';
+    let arch = 'amd64';
+    if (external_os_.platform() in PLATFORM_MAP) {
+        platform = PLATFORM_MAP[external_os_.platform()];
+    }
+    if (external_os_.machine() in ARCH_MAP) {
+        if (platform === 'windows') {
+            arch = `${ARCH_MAP[external_os_.machine()]}.exe`;
+        }
+        else {
+            arch = ARCH_MAP[external_os_.machine()];
+        }
+    }
     if (version.startsWith('v')) {
         version = version.slice(1);
     }
-    return `https://github.com/scaleway/scaleway-cli/releases/download/v${version}/scaleway-cli_${version}_linux_amd64`;
+    return `https://github.com/scaleway/scaleway-cli/releases/download/v${version}/scaleway-cli_${version}_${platform}_${arch}`;
 };
 const isInPath = (toolPath) => {
     const envPath = process.env.PATH;
