@@ -34,7 +34,7 @@
     "@scaleway/eslint-config-react": "^3.18.0",
     "@types/node": "^20.12.6",
     "@types/shell-quote": "^1.7.5",
-    "@typescript-eslint/parser": "^7.6.0",
+    "@typescript-eslint/parser": "^7.11.0",
     "@vercel/ncc": "^0.38.1",
     "eslint": "^8.57.0",
     "eslint-plugin-deprecation": "^2.0.0",
