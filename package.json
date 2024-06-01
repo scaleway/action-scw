@@ -31,7 +31,7 @@
   ],
   "author": "Scaleway",
   "devDependencies": {
-    "@scaleway/eslint-config-react": "^3.18.0",
+    "@scaleway/eslint-config-react": "^3.18.3",
     "@types/node": "^20.12.6",
     "@types/shell-quote": "^1.7.5",
     "@typescript-eslint/parser": "^7.6.0",
