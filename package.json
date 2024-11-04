@@ -40,7 +40,7 @@
     "eslint-plugin-deprecation": "^3.0.0",
     "eslint-plugin-tsdoc": "^0.3.0",
     "prettier": "^3.3.3",
-    "typescript": "^5.6.2"
+    "typescript": "^5.6.3"
   },
   "dependencies": {
     "@actions/core": "^1.11.1",
