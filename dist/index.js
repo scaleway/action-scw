@@ -5591,18 +5591,18 @@ function coerce (version, options) {
 
 /***/ }),
 
-/***/ 7557:
+/***/ 2264:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 
 
-/* unused reexport */ __nccwpck_require__(3214);
-exports.parse = __nccwpck_require__(7202);
+/* unused reexport */ __nccwpck_require__(641);
+exports.parse = __nccwpck_require__(3373);
 
 
 /***/ }),
 
-/***/ 7202:
+/***/ 3373:
 /***/ ((module) => {
 
 
@@ -5835,18 +5835,21 @@ module.exports = function parse(s, env, opts) {
 
 /***/ }),
 
-/***/ 3214:
+/***/ 641:
 /***/ ((module) => {
 
 
 
 module.exports = function quote(xs) {
 	return xs.map(function (s) {
+		if (s === '') {
+			return '\'\'';
+		}
 		if (s && typeof s === 'object') {
 			return s.op.replace(/(.)/g, '\\$1');
 		}
-		if ((/["\s]/).test(s) && !(/'/).test(s)) {
-			return "'" + s.replace(/(['\\])/g, '\\$1') + "'";
+		if ((/["\s\\]/).test(s) && !(/'/).test(s)) {
+			return "'" + s.replace(/(['])/g, '\\$1') + "'";
 		}
 		if ((/["'\s]/).test(s)) {
 			return '"' + s.replace(/(["\\$`!])/g, '\\$1') + '"';
@@ -30968,8 +30971,8 @@ const fillEnv = (args) => {
 
 // EXTERNAL MODULE: external "child_process"
 var external_child_process_ = __nccwpck_require__(2081);
-// EXTERNAL MODULE: ./node_modules/.pnpm/shell-quote@1.8.1/node_modules/shell-quote/index.js
-var shell_quote = __nccwpck_require__(7557);
+// EXTERNAL MODULE: ./node_modules/.pnpm/shell-quote@1.8.3/node_modules/shell-quote/index.js
+var shell_quote = __nccwpck_require__(2264);
 ;// CONCATENATED MODULE: ./lib/run.js
 
 
