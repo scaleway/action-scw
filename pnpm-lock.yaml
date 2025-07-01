@@ -29,8 +29,8 @@ devDependencies:
     specifier: ^3.18.4
     version: 3.18.4(eslint@8.57.1)(typescript@5.8.3)
   '@types/node':
-    specifier: ^24.0.3
-    version: 24.0.3
+    specifier: ^24.0.8
+    version: 24.0.8
   '@types/shell-quote':
     specifier: ^1.7.5
     version: 1.7.5
@@ -351,8 +351,8 @@ packages:
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
     dev: true
 
-  /@types/node@24.0.3:
-    resolution: {integrity: sha512-R4I/kzCYAdRLzfiCabn9hxWfbuHS573x+r0dJMkkzThEa7pbrcDWK+9zu3e7aBOouf+rQAciqPFMnxwr0aWgKg==}
+  /@types/node@24.0.8:
+    resolution: {integrity: sha512-WytNrFSgWO/esSH9NbpWUfTMGQwCGIKfCmNlmFDNiI5gGhgMmEA+V1AEvKLeBNvvtBnailJtkrEa2OIISwrVAA==}
     dependencies:
       undici-types: 7.8.0
     dev: true
