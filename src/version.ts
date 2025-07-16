@@ -10,9 +10,16 @@ type LatestPayload = {
 
 const latestUrl =
   'https://api.github.com/repos/scaleway/scaleway-cli/releases/latest'
-export const getLatest = async () => {
+export const getLatest = async (repoToken: string) => {
+  const headers: Record<string, string> = {
+    Accept: 'application/vnd.github+json',
+  }
+  if (repoToken.trim() !== '') {
+    headers.Authorization = `Bearer ${repoToken}`
+  }
+
   const httpClient = new HttpClient(USER_AGENT)
-  const resp = await httpClient.getJson<LatestPayload>(latestUrl)
+  const resp = await httpClient.getJson<LatestPayload>(latestUrl, headers)
 
   if (resp.statusCode !== 200) {
     throw new Error(

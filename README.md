@@ -39,6 +39,7 @@ Checkout CLI's [config documentation](https://github.com/scaleway/scaleway-cli/b
 
 ### Others
 
+- `repo-token`: default to the workflow token (i.e. `GITHUB_TOKEN`), needed to check the latest version of the tool available
 - `version`: default to latest, must be exact version. Fetched from exported config if available
 - `access-key`
 - `secret-key`
