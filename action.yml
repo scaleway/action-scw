@@ -4,6 +4,10 @@ branding:
   icon: terminal
   color: purple
 inputs:
+  repo-token:
+    description: 'The GitHub token, used to check for latest CLI version'
+    required: false
+    default: ${{ github.token }}
   version:
     description: 'CLI version, will default to latest or exported version'
     required: false
