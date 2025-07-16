@@ -70,11 +70,11 @@ const setPermissions = async (filePath: string) => {
   }
 }
 
-export const install = async (requestedVersion: string) => {
+export const install = async (requestedVersion: string, repoToken: string) => {
   let version = requestedVersion
 
   if (requestedVersion === VERSION_LATEST) {
-    version = await getLatest()
+    version = await getLatest(repoToken)
   }
 
   let toolPath = tc.find('scw', version)
