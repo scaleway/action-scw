@@ -1,4 +1,6 @@
 name: Check dist
+permissions:
+  contents: read
 
 on:
   push:
