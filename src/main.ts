@@ -7,6 +7,7 @@ import { CLIError, run } from './run.js'
 import { VERSION_LATEST } from './version.js'
 
 const getArgs = (defaultArgs: Args): Args => ({
+  repoToken: core.getInput('repo-token') || defaultArgs.repoToken,
   version: core.getInput('version') || defaultArgs.version || VERSION_LATEST,
   accessKey: core.getInput('access-key') || defaultArgs.accessKey,
   secretKey: core.getInput('secret-key') || defaultArgs.secretKey,
@@ -29,7 +30,7 @@ export const main = async () => {
     return
   }
 
-  const cliPath = await install(args.version)
+  const cliPath = await install(args.version, args.repoToken)
 
   if (args.args) {
     fillEnv(args)

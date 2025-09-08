@@ -12,6 +12,7 @@ export const exportConfig = (args: Args) => {
 }
 
 export const importConfig = (): Args => ({
+  repoToken: '',
   defaultOrganizationID: process.env.SCW_DEFAULT_ORGANIZATION_ID ?? '',
   defaultProjectID: process.env.SCW_DEFAULT_PROJECT_ID ?? '',
   secretKey: process.env.SCW_SECRET_KEY ?? '',

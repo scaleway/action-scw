@@ -30861,9 +30861,15 @@ var lib = __nccwpck_require__(6372);
 const VERSION_LATEST = 'latest';
 const USER_AGENT = 'scaleway/action-scw';
 const latestUrl = 'https://api.github.com/repos/scaleway/scaleway-cli/releases/latest';
-const getLatest = async () => {
+const getLatest = async (repoToken) => {
+    const headers = {
+        Accept: 'application/vnd.github+json',
+    };
+    if (repoToken.trim() !== '') {
+        headers.Authorization = `Bearer ${repoToken}`;
+    }
     const httpClient = new lib.HttpClient(USER_AGENT);
-    const resp = await httpClient.getJson(latestUrl);
+    const resp = await httpClient.getJson(latestUrl, headers);
     if (resp.statusCode !== 200) {
         throw new Error(`Failed to fetch latest version (status: ${resp.statusCode})`);
     }
@@ -30943,10 +30949,10 @@ const setPermissions = async (filePath) => {
         core.debug(`mode ${stats.mode}`);
     }
 };
-const install = async (requestedVersion) => {
+const install = async (requestedVersion, repoToken) => {
     let version = requestedVersion;
     if (requestedVersion === VERSION_LATEST) {
-        version = await getLatest();
+        version = await getLatest(repoToken);
     }
     let toolPath = tool_cache.find('scw', version);
     if (!toolPath) {
@@ -31049,6 +31055,7 @@ const exportConfig = (args) => {
     core.exportVariable('SCW_CLI_VERSION', args.version);
 };
 const importConfig = () => ({
+    repoToken: '',
     defaultOrganizationID: process.env.SCW_DEFAULT_ORGANIZATION_ID ?? '',
     defaultProjectID: process.env.SCW_DEFAULT_PROJECT_ID ?? '',
     secretKey: process.env.SCW_SECRET_KEY ?? '',
@@ -31095,6 +31102,7 @@ const validateArgs = (args) => !versionIsValid(args.version);
 
 
 const getArgs = (defaultArgs) => ({
+    repoToken: core.getInput('repo-token') || defaultArgs.repoToken,
     version: core.getInput('version') || defaultArgs.version || VERSION_LATEST,
     accessKey: core.getInput('access-key') || defaultArgs.accessKey,
     secretKey: core.getInput('secret-key') || defaultArgs.secretKey,
@@ -31111,7 +31119,7 @@ const main = async () => {
     if (validateArgs(args)) {
         return;
     }
-    const cliPath = await install(args.version);
+    const cliPath = await install(args.version, args.repoToken);
     if (args.args) {
         fillEnv(args);
         try {

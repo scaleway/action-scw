@@ -3,6 +3,7 @@ import * as tc from '@actions/tool-cache'
 import { VERSION_LATEST } from './version.js'
 
 export type Args = {
+  repoToken: string
   version: string
   accessKey: string
   secretKey: string
