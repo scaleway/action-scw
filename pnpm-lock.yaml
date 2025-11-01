@@ -29,8 +29,8 @@ devDependencies:
     specifier: ^3.18.4
     version: 3.18.4(eslint@8.57.1)(typescript@5.9.3)
   '@types/node':
-    specifier: ^24.6.1
-    version: 24.6.1
+    specifier: ^24.9.2
+    version: 24.9.2
   '@types/shell-quote':
     specifier: ^1.7.5
     version: 1.7.5
@@ -351,10 +351,10 @@ packages:
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
     dev: true
 
-  /@types/node@24.6.1:
-    resolution: {integrity: sha512-ljvjjs3DNXummeIaooB4cLBKg2U6SPI6Hjra/9rRIy7CpM0HpLtG9HptkMKAb4HYWy5S7HUvJEuWgr/y0U8SHw==}
+  /@types/node@24.9.2:
+    resolution: {integrity: sha512-uWN8YqxXxqFMX2RqGOrumsKeti4LlmIMIyV0lgut4jx7KQBcBiW6vkDtIBvHnHIquwNfJhk8v2OtmO8zXWHfPA==}
     dependencies:
-      undici-types: 7.13.0
+      undici-types: 7.16.0
     dev: true
 
   /@types/semver@7.5.8:
@@ -2643,8 +2643,8 @@ packages:
       which-boxed-primitive: 1.0.2
     dev: true
 
-  /undici-types@7.13.0:
-    resolution: {integrity: sha512-Ov2Rr9Sx+fRgagJ5AX0qvItZG/JKKoBRAVITs1zk7IqZGTJUwgUr7qoYBpWwakpWilTZFM98rG/AFRocu10iIQ==}
+  /undici-types@7.16.0:
+    resolution: {integrity: sha512-Zz+aZWSj8LE6zoxD+xrjh4VfkIG8Ya6LvYkZqtUQGJPZjYl53ypCaUwWqo7eI0x66KBGeRo+mlBEkMSeSZ38Nw==}
     dev: true
 
   /undici@5.29.0:
