@@ -80,7 +80,11 @@ export const install = async (requestedVersion: string, repoToken: string) => {
   let toolPath = tc.find('scw', version)
   if (!toolPath) {
     core.info(`Didn't found CLI in cache, downloading ${version}`)
-    const tmpCliPath = await tc.downloadTool(downloadURL(version))
+    const tmpCliPath = await tc.downloadTool(
+      downloadURL(version),
+      undefined,
+      repoToken.trim() !== '' ? `token ${repoToken}` : undefined,
+    )
     await setPermissions(tmpCliPath)
     toolPath = await tc.cacheFile(tmpCliPath, 'scw', TOOL_NAME, version)
   } else {
