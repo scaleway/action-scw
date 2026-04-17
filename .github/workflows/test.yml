@@ -5,7 +5,7 @@ permissions:
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
   merge_group:
 
@@ -39,6 +39,7 @@ jobs:
       - name: Use CLI
         run: scw info
   test_action_usage:
+    if: github.event_name != 'pull_request' || (github.event.pull_request.head.repo.full_name == 'scaleway/action-scw' && github.actor != 'dependabot[bot]')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -48,7 +49,7 @@ jobs:
         uses: ./
         with:
           args: instance server-type list
-          version: v2.29.0
+          version: v2.54.0
           access-key: ${{ secrets.SCW_ACCESS_KEY }}
           secret-key: ${{ secrets.SCW_SECRET_KEY }}
           default-project-id: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
@@ -68,6 +69,7 @@ jobs:
         run: |
           [ "$( echo '${{ steps.cli_manual.outputs.json }}' | jq -r 'type')" = "array" ]
   test_action_export_config:
+    if: github.event_name != 'pull_request' || (github.event.pull_request.head.repo.full_name == 'scaleway/action-scw' && github.actor != 'dependabot[bot]')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -76,7 +78,7 @@ jobs:
         uses: ./
         with:
           export-config: true
-          version: v2.29.0
+          version: v2.54.0
           access-key: ${{ secrets.SCW_ACCESS_KEY }}
           secret-key: ${{ secrets.SCW_SECRET_KEY }}
           default-project-id: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
@@ -105,6 +107,7 @@ jobs:
           default-project-id: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
           default-organization-id: ${{ secrets.SCW_DEFAULT_ORGANIZATION_ID }}
   test_action_save_config:
+    if: github.event_name != 'pull_request' || (github.event.pull_request.head.repo.full_name == 'scaleway/action-scw' && github.actor != 'dependabot[bot]')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -113,7 +116,7 @@ jobs:
         uses: ./
         with:
           save-config: true
-          version: v2.29.0
+          version: v2.54.0
           access-key: ${{ secrets.SCW_ACCESS_KEY }}
           secret-key: ${{ secrets.SCW_SECRET_KEY }}
           default-project-id: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
