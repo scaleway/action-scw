@@ -9,7 +9,7 @@ This action install [scaleway-cli](https://github.com/scaleway/scaleway-cli) and
 - `save_config`: save your config to scaleway's config file, useful to use it with other tools like terraform or SDKs
 - `export_config`: export your config to the environment to use the same action in the next steps
 
-Checkout CLI's [config documentation](https://github.com/scaleway/scaleway-cli/blob/master/docs/commands/config.md)
+Checkout CLI's [config documentation](https://github.com/scaleway/scaleway-cli/blob/main/docs/commands/config.md)
 
 ```yml
 - name: Use CLI
