@@ -32,14 +32,14 @@
   "author": "Scaleway",
   "devDependencies": {
     "@scaleway/eslint-config-react": "^3.18.4",
-    "@types/node": "^25.2.0",
+    "@types/node": "^25.3.3",
     "@types/shell-quote": "^1.7.5",
     "@typescript-eslint/parser": "^7.18.0",
     "@vercel/ncc": "^0.38.1",
     "eslint": "^8.57.1",
     "eslint-plugin-deprecation": "^3.0.0",
-    "eslint-plugin-tsdoc": "^0.5.0",
-    "prettier": "^3.7.4",
+    "eslint-plugin-tsdoc": "^0.5.2",
+    "prettier": "^3.8.1",
     "typescript": "^5.9.3"
   },
   "dependencies": {
@@ -47,7 +47,7 @@
     "@actions/github": "^9.0.0",
     "@actions/http-client": "^4.0.0",
     "@actions/io": "^3.0.2",
-    "@actions/tool-cache": "^2.0.1",
+    "@actions/tool-cache": "^4.0.0",
     "shell-quote": "^1.8.1"
   }
 }
