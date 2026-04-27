@@ -41,5 +41,5 @@ outputs:
   json:
     description: JSON output of CLI command if args has been specified
 runs:
-  using: node20
+  using: node22
   main: dist/index.js
