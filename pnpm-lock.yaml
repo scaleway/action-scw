@@ -12,8 +12,8 @@ dependencies:
     specifier: ^9.1.1
     version: 9.1.1
   '@actions/http-client':
-    specifier: ^4.0.0
-    version: 4.0.0
+    specifier: ^4.0.1
+    version: 4.0.1
   '@actions/io':
     specifier: ^3.0.2
     version: 3.0.2
@@ -67,7 +67,7 @@ packages:
     resolution: {integrity: sha512-a6d/Nwahm9fliVGRhdhofo40HjHQasUPusmc7vBfyky+7Z+P2A1J68zyFVaNcEclc/Se+eO595oAr5nwEIoIUA==}
     dependencies:
       '@actions/exec': 3.0.0
-      '@actions/http-client': 4.0.0
+      '@actions/http-client': 4.0.1
     dev: false
 
   /@actions/exec@3.0.0:
@@ -95,11 +95,11 @@ packages:
       undici: 6.25.0
     dev: false
 
-  /@actions/http-client@4.0.0:
-    resolution: {integrity: sha512-QuwPsgVMsD6qaPD57GLZi9sqzAZCtiJT8kVBCDpLtxhL5MydQ4gS+DrejtZZPdIYyB1e95uCK9Luyds7ybHI3g==}
+  /@actions/http-client@4.0.1:
+    resolution: {integrity: sha512-+Nvd1ImaOZBSoPbsUtEhv+1z99H12xzncCkz0a3RuehINE81FZSe2QTj3uvAPTcJX/SCzUQHQ0D1GrPMbrPitg==}
     dependencies:
       tunnel: 0.0.6
-      undici: 6.23.0
+      undici: 6.25.0
     dev: false
 
   /@actions/io@3.0.2:
@@ -111,7 +111,7 @@ packages:
     dependencies:
       '@actions/core': 3.0.1
       '@actions/exec': 3.0.0
-      '@actions/http-client': 4.0.0
+      '@actions/http-client': 4.0.1
       '@actions/io': 3.0.2
       semver: 7.7.4
     dev: false
@@ -2822,11 +2822,6 @@ packages:
   /undici-types@7.19.2:
     resolution: {integrity: sha512-qYVnV5OEm2AW8cJMCpdV20CDyaN3g0AjDlOGf1OW4iaDEx8MwdtChUp4zu4H0VP3nDRF/8RKWH+IPp9uW0YGZg==}
     dev: true
-
-  /undici@6.23.0:
-    resolution: {integrity: sha512-VfQPToRA5FZs/qJxLIinmU59u0r7LXqoJkCzinq3ckNJp3vKEh7jTWN589YQ5+aoAC/TGRLyJLCPKcLQbM8r9g==}
-    engines: {node: '>=18.17'}
-    dev: false
 
   /undici@6.25.0:
     resolution: {integrity: sha512-ZgpWDC5gmNiuY9CnLVXEH8rl50xhRCuLNA97fAUnKi8RRuV4E6KG31pDTsLVUKnohJE0I3XDrTeEydAXRw47xg==}
