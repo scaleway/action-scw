@@ -12,9 +12,16 @@ const PLATFORM_MAP = {
   freebsd: 'freebsd',
   win32: 'windows',
 }
+// Keyed by os.machine() (the `uname -m` value), which differs per platform:
+// Linux reports x86_64 / aarch64 / i686, while macOS reports x86_64 / arm64.
+// Values match Scaleway's release asset suffixes (linux_amd64, linux_arm64, ...).
 const ARCH_MAP = {
+  x86_64: 'amd64',
+  amd64: 'amd64',
+  aarch64: 'arm64',
   arm64: 'arm64',
   i386: '386',
+  i686: '386',
 }
 
 const downloadURL = (targetVersion: string): string => {
