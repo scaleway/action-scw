@@ -21,8 +21,8 @@ dependencies:
     specifier: ^4.0.0
     version: 4.0.0
   shell-quote:
-    specifier: ^1.8.1
-    version: 1.8.1
+    specifier: ^1.8.4
+    version: 1.8.4
 
 devDependencies:
   '@scaleway/eslint-config-react':
@@ -2571,8 +2571,9 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /shell-quote@1.8.1:
-    resolution: {integrity: sha512-6j1W9l1iAs/4xYBI1SYOVZyFcCis9b4KCLQ8fgAGG07QvzaRLVVRQvAy85yNmmZSjYjg4MWh4gNvlPujU/5LpA==}
+  /shell-quote@1.8.4:
+    resolution: {integrity: sha512-VsC6n6vz1ihYYyZZwX7YZSF5l5x36ca17OC+a69h94YqB7X6XLwf+5MOgynYir2SLFUbl8gIYvBo8K8RoNQ6bQ==}
+    engines: {node: '>= 0.4'}
     dev: false
 
   /side-channel@1.0.6:
