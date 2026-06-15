@@ -2671,18 +2671,18 @@ module.exports = validRange
 
 /***/ }),
 
-/***/ 7557:
+/***/ 5133:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 
 
-/* unused reexport */ __nccwpck_require__(3214);
-exports.parse = __nccwpck_require__(7202);
+/* unused reexport */ __nccwpck_require__(5904);
+exports.parse = __nccwpck_require__(2324);
 
 
 /***/ }),
 
-/***/ 7202:
+/***/ 2324:
 /***/ ((module) => {
 
 
@@ -2915,18 +2915,63 @@ module.exports = function parse(s, env, opts) {
 
 /***/ }),
 
-/***/ 3214:
+/***/ 5904:
 /***/ ((module) => {
 
 
 
+var OPS = [
+	'||',
+	'&&',
+	';;',
+	'|&',
+	'<(',
+	'<<<',
+	'>>',
+	'>&',
+	'<&',
+	'&',
+	';',
+	'(',
+	')',
+	'|',
+	'<',
+	'>'
+];
+var LINE_TERMINATORS = /[\n\r\u2028\u2029]/;
+var GLOB_SHELL_SPECIAL = /[\s#!"$&'():;<=>@\\^`|]/g;
+
 module.exports = function quote(xs) {
 	return xs.map(function (s) {
-		if (s && typeof s === 'object') {
-			return s.op.replace(/(.)/g, '\\$1');
+		if (s === '') {
+			return '\'\'';
 		}
-		if ((/["\s]/).test(s) && !(/'/).test(s)) {
-			return "'" + s.replace(/(['\\])/g, '\\$1') + "'";
+		if (s && typeof s === 'object') {
+			if (s.op === 'glob') {
+				if (typeof s.pattern !== 'string') {
+					throw new TypeError('glob token requires a string `pattern`');
+				}
+				if (LINE_TERMINATORS.test(s.pattern)) {
+					throw new TypeError('glob `pattern` must not contain line terminators');
+				}
+				return s.pattern.replace(GLOB_SHELL_SPECIAL, '\\$&');
+			}
+			if (typeof s.op === 'string') {
+				if (OPS.indexOf(s.op) < 0) {
+					throw new TypeError('invalid `op` value: ' + JSON.stringify(s.op));
+				}
+				return s.op.replace(/[\s\S]/g, '\\$&');
+			}
+			if (typeof s.comment === 'string') {
+				if (LINE_TERMINATORS.test(s.comment)) {
+					throw new TypeError('`comment` must not contain line terminators');
+				}
+				return '#' + s.comment;
+			}
+			throw new TypeError('unrecognized object token shape');
+		}
+		if ((/["\s\\]/).test(s) && !(/'/).test(s)) {
+			return "'" + s.replace(/(['])/g, '\\$1') + "'";
 		}
 		if ((/["'\s]/).test(s)) {
 			return '"' + s.replace(/(["\\$`!])/g, '\\$1') + '"';
@@ -34863,8 +34908,8 @@ const fillEnv = (args) => {
     }
 };
 
-// EXTERNAL MODULE: ./node_modules/.pnpm/shell-quote@1.8.1/node_modules/shell-quote/index.js
-var shell_quote = __nccwpck_require__(7557);
+// EXTERNAL MODULE: ./node_modules/.pnpm/shell-quote@1.8.4/node_modules/shell-quote/index.js
+var shell_quote = __nccwpck_require__(5133);
 ;// CONCATENATED MODULE: ./lib/run.js
 
 
