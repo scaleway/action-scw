@@ -4,21 +4,26 @@
     "eslint-plugin-tsdoc"
   ],
   "parserOptions": {
-    "project": ["tsconfig.json"]
+    "project": [
+      "tsconfig.json"
+    ]
   },
-  "extends": ["@scaleway/react/typescript"],
+  "extends": [
+    "@scaleway/react/typescript"
+  ],
   "rules": {
     "tsdoc/syntax": "warn",
     "@typescript-eslint/naming-convention": [
       "error",
       {
         "selector": "enumMember",
-        "format": ["PascalCase"]
+        "format": [
+          "PascalCase"
+        ]
       }
     ],
     "import/prefer-default-export": "off",
     "import/no-default-export": "error",
-    //"no-await-in-loop": "off",
     "@typescript-eslint/no-namespace": "off"
   },
   "overrides": [
@@ -29,6 +34,16 @@
       ],
       "rules": {
         "@typescript-eslint/consistent-type-definitions": "off"
+      }
+    },
+    {
+      "files": [
+        "src/__tests__/**/*.ts"
+      ],
+      "rules": {
+        "import/first": "off",
+        "import/order": "off",
+        "@typescript-eslint/require-await": "off"
       }
     }
   ]
