@@ -22,6 +22,8 @@ Checkout CLI's [config documentation](https://github.com/scaleway/scaleway-cli/b
     secret-key: ${{ secrets.SCW_SECRET_KEY }}
     default-project-id: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
     default-organization-id: ${{ secrets.SCW_DEFAULT_ORGANIZATION_ID }}
+    default-zone: ${{ secrets.SCW_DEFAULT_ZONE }}
+    default-region: ${{ secrets.SCW_DEFAULT_REGION }}
 ```
 
 ### Commands
@@ -45,3 +47,5 @@ Checkout CLI's [config documentation](https://github.com/scaleway/scaleway-cli/b
 - `secret-key`
 - `default-project-id`
 - `default-organization-id`
+- `default-zone`
+- `default-region`
