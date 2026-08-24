@@ -27,7 +27,7 @@ jobs:
         shell: bash
       - name: Upload coverage artifact
         if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@v8
         with:
           name: coverage-report-typescript
           path: coverage/cobertura-coverage.xml
