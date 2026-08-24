@@ -162,7 +162,11 @@ jobs:
           default-organization-id: ${{ secrets.SCW_DEFAULT_ORGANIZATION_ID }}
   upload-coverage-typescript:
     needs: lint
-    if: ${{ !cancelled() && needs.lint.result == 'success' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) }}
+    if: |
+      !cancelled()
+      && needs.lint.result == 'success'
+      && github.event_name != 'pull_request'
+      || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     permissions:
       contents: read
