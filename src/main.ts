@@ -16,6 +16,8 @@ const getArgs = (defaultArgs: Args): Args => ({
     defaultArgs.defaultOrganizationID,
   defaultProjectID:
     core.getInput('default-project-id') || defaultArgs.defaultProjectID,
+  defaultZone: core.getInput('default-zone') || defaultArgs.defaultZone,
+  defaultRegion: core.getInput('default-region') || defaultArgs.defaultRegion,
   args: core.getInput('args') || defaultArgs.args,
   saveConfig: core.getBooleanInput('save-config') || defaultArgs.saveConfig,
   exportConfig:

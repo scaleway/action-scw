@@ -117,4 +117,10 @@ export const fillEnv = (args: Args) => {
   if (args.defaultProjectID) {
     process.env.SCW_DEFAULT_PROJECT_ID = args.defaultProjectID
   }
+  if (args.defaultZone) {
+    process.env.SCW_DEFAULT_ZONE = args.defaultZone
+  }
+  if (args.defaultRegion) {
+    process.env.SCW_DEFAULT_REGION = args.defaultRegion
+  }
 }
