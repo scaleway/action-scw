@@ -37,6 +37,12 @@ inputs:
   default-organization-id:
     description: 'Scaleway default organization ID'
     required: false
+  default-zone:
+    description: 'Scaleway default zone'
+    required: false
+  default-region:
+    description: 'Scaleway default region'
+    required: false
 outputs:
   json:
     description: JSON output of CLI command if args has been specified
