@@ -39,7 +39,7 @@
     "eslint": "^8.57.1",
     "eslint-plugin-deprecation": "^3.0.0",
     "eslint-plugin-tsdoc": "^0.5.4",
-    "prettier": "^3.9.9",
+    "prettier": "^3.9.10",
     "typescript": "^5.9.3"
   },
   "dependencies": {
