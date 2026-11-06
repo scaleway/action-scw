@@ -8,7 +8,7 @@
     "node": ">=24.0",
     "pnpm": ">=8.15.6"
   },
-  "packageManager": "pnpm@8.15.9",
+  "packageManager": "pnpm@12.18.0",
   "scripts": {
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
