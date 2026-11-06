@@ -1,5 +1,5 @@
-import * as core from '@actions/core'
 import path from 'path'
+import * as core from '@actions/core'
 import { fillEnv, install } from './cli.js'
 import { exportConfig, importConfig, saveConfig } from './config.js'
 import { type Args, validateArgs } from './input.js'

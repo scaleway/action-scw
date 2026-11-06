@@ -1,5 +1,5 @@
-import * as core from '@actions/core'
 import { spawn } from 'child_process'
+import * as core from '@actions/core'
 import { parse } from 'shell-quote'
 
 type SpawnResult = {
