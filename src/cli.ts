@@ -1,8 +1,8 @@
+import { promises as fs } from 'fs'
+import os from 'os'
 import * as core from '@actions/core'
 import * as io from '@actions/io'
 import * as tc from '@actions/tool-cache'
-import { promises as fs } from 'fs'
-import os from 'os'
 import type { Args } from './input.js'
 import { VERSION_LATEST, getLatest } from './version.js'
 
