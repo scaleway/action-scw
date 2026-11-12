@@ -56,7 +56,7 @@ devDependencies:
     version: 0.5.4(eslint@10.14.0)(typescript@5.9.3)
   prettier:
     specifier: ^3.9.10
-    version: 3.9.10
+    version: 3.10.1
   typescript:
     specifier: ^5.9.3
     version: 5.9.3
@@ -2951,8 +2951,8 @@ packages:
     engines: {node: '>= 0.8.0'}
     dev: true
 
-  /prettier@3.9.10:
-    resolution: {integrity: sha512-skGHTH1Yb9QvaTC4hWnRTzEYtCpApF0UMBPz+t/0ZPzP8ihefo/btKd+QA7pUE0fEwA1SbS/NmhyEcstdXOIdA==}
+  /prettier@3.10.1:
+    resolution: {integrity: sha512-70vp3ZUYoPlFbF9uiTdXHUUCGEIp7d4+6p+8DYbkm2jP7x/3i/paXVF6dopSI3zd/CEitrZN1rc4i85xWmmXlg==}
     engines: {node: '>=14'}
     hasBin: true
     dev: true
