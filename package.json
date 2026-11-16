@@ -42,13 +42,6 @@
     "prettier": "^3.9.10",
     "typescript": "^5.9.3"
   },
-  "pnpm": {
-    "overrides": {
-      "@typescript-eslint/eslint-plugin": "8.72.2",
-      "@typescript-eslint/parser": "8.72.2",
-      "@typescript-eslint/utils": "8.72.2"
-    }
-  },
   "dependencies": {
     "@actions/core": "^3.0.1",
     "@actions/github": "^9.1.1",
