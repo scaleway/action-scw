@@ -9,6 +9,8 @@ export type Args = {
   secretKey: string
   defaultOrganizationID: string
   defaultProjectID: string
+  defaultZone: string
+  defaultRegion: string
   args: string
   saveConfig: boolean
   exportConfig: boolean

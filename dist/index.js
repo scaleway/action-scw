@@ -34942,6 +34942,12 @@ const fillEnv = (args) => {
     if (args.defaultProjectID) {
         process.env.SCW_DEFAULT_PROJECT_ID = args.defaultProjectID;
     }
+    if (args.defaultZone) {
+        process.env.SCW_DEFAULT_ZONE = args.defaultZone;
+    }
+    if (args.defaultRegion) {
+        process.env.SCW_DEFAULT_REGION = args.defaultRegion;
+    }
 };
 
 // EXTERNAL MODULE: ./node_modules/.pnpm/shell-quote@1.9.0/node_modules/shell-quote/index.js
@@ -35007,12 +35013,16 @@ const exportConfig = (args) => {
     exportVariable('SCW_SECRET_KEY', args.secretKey);
     exportVariable('SCW_DEFAULT_ORGANIZATION_ID', args.defaultOrganizationID);
     exportVariable('SCW_DEFAULT_PROJECT_ID', args.defaultProjectID);
+    exportVariable('SCW_DEFAULT_ZONE', args.defaultZone);
+    exportVariable('SCW_DEFAULT_REGION', args.defaultRegion);
     exportVariable('SCW_CLI_VERSION', args.version);
 };
 const importConfig = () => ({
     repoToken: '',
     defaultOrganizationID: process.env.SCW_DEFAULT_ORGANIZATION_ID ?? '',
     defaultProjectID: process.env.SCW_DEFAULT_PROJECT_ID ?? '',
+    defaultZone: process.env.SCW_DEFAULT_ZONE ?? '',
+    defaultRegion: process.env.SCW_DEFAULT_REGION ?? '',
     secretKey: process.env.SCW_SECRET_KEY ?? '',
     version: process.env.SCW_CLI_VERSION ?? '',
     accessKey: process.env.SCW_ACCESS_KEY ?? '',
@@ -35027,6 +35037,8 @@ const saveConfig = async (args, cliPath) => {
         `access-key=${args.accessKey}`,
         `organization-id=${args.defaultOrganizationID}`,
         `project-id=${args.defaultProjectID}`,
+        `zone=${args.defaultZone}`,
+        `region=${args.defaultRegion}`,
         `send-telemetry=false`,
         `install-autocomplete=false`,
     ], cliPath);
@@ -35064,6 +35076,8 @@ const getArgs = (defaultArgs) => ({
     defaultOrganizationID: getInput('default-organization-id') ||
         defaultArgs.defaultOrganizationID,
     defaultProjectID: getInput('default-project-id') || defaultArgs.defaultProjectID,
+    defaultZone: getInput('default-zone') || defaultArgs.defaultZone,
+    defaultRegion: getInput('default-region') || defaultArgs.defaultRegion,
     args: getInput('args') || defaultArgs.args,
     saveConfig: getBooleanInput('save-config') || defaultArgs.saveConfig,
     exportConfig: getBooleanInput('export-config') || defaultArgs.exportConfig,
