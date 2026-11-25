@@ -8,6 +8,8 @@ export const exportConfig = (args: Args) => {
   core.exportVariable('SCW_SECRET_KEY', args.secretKey)
   core.exportVariable('SCW_DEFAULT_ORGANIZATION_ID', args.defaultOrganizationID)
   core.exportVariable('SCW_DEFAULT_PROJECT_ID', args.defaultProjectID)
+  core.exportVariable('SCW_DEFAULT_ZONE', args.defaultZone)
+  core.exportVariable('SCW_DEFAULT_REGION', args.defaultRegion)
   core.exportVariable('SCW_CLI_VERSION', args.version)
 }
 
@@ -15,6 +17,8 @@ export const importConfig = (): Args => ({
   repoToken: '',
   defaultOrganizationID: process.env.SCW_DEFAULT_ORGANIZATION_ID ?? '',
   defaultProjectID: process.env.SCW_DEFAULT_PROJECT_ID ?? '',
+  defaultZone: process.env.SCW_DEFAULT_ZONE ?? '',
+  defaultRegion: process.env.SCW_DEFAULT_REGION ?? '',
   secretKey: process.env.SCW_SECRET_KEY ?? '',
   version: process.env.SCW_CLI_VERSION ?? '',
   accessKey: process.env.SCW_ACCESS_KEY ?? '',
@@ -31,6 +35,8 @@ export const saveConfig = async (args: Args, cliPath?: string) => {
       `access-key=${args.accessKey}`,
       `organization-id=${args.defaultOrganizationID}`,
       `project-id=${args.defaultProjectID}`,
+      `zone=${args.defaultZone}`,
+      `region=${args.defaultRegion}`,
       `send-telemetry=false`,
       `install-autocomplete=false`,
     ],
